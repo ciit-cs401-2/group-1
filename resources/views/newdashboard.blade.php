@@ -58,10 +58,33 @@
                 <h2>Account Settings</h2>
                 <ul class = "accountOptions">
                     <li><a class = "icon" href = "#" onclick = "changeContent('profile', this)"><img class = "manageIcon" width="24" height="24" src="https://img.icons8.com/material-rounded/24/6f4e37/guest-male.png" alt="guest-male"/><p>Profile & Settings</p></a></li>
-                    <li><a class = "icon" href = "#"><img class = "manageIcon" width="24" height="24" src="https://img.icons8.com/material-rounded/24/6f4e37/exit.png" alt="exit"/><p>Log Out</p></a></li>
+                    <li><a class = "icon" href = "#" onclick="logout()"><img class = "manageIcon" width="24" height="24" src="https://img.icons8.com/material-rounded/24/6f4e37/exit.png" alt="exit"/><p>Log Out</p></a></li>
                 </ul>
             </div>
         </div>
+
+        <div id="logout">
+            <h1>Log Out?</h1>
+            <div class="button-group2">
+                <button class="button1" onclick="confLG()">Log Out</button>
+                <button class="button2"onclick="cancelLG()"">Cancel</button>
+            </div>
+        </div>
+        <div id="overlay"></div>
+        <script>
+            function logout() {
+                document.getElementById("logout").style.display = "block";
+                document.getElementById("overlay").style.display = "block";
+            }
+
+            function confLG() {
+                alert("Logged out succesfully.")
+            }
+            function cancelLG() {
+                document.getElementById("logout").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+            }
+        </script>
 
         <div class = "content">
             <!-- === MANAGE POSTS === -->
@@ -475,10 +498,10 @@
                     <p>YOU WILL NOT BE ABLE TO RECOVER ACCOUNT AFTER DELETION</p>
                     <p>Enter password to confirm account deletion</p>
                     <form action="">
-                            <input type="password" name="confpass" required>
-                            <div class="button-group2">
-                                <button class="button1" onclick="confDel()">Delete</button>
-                                <button class="button2"onclick="closeDel()"">Cancel</button>
+                        <input type="password" name="confpass" required>
+                        <div class="button-group2">
+                            <button class="button1" onclick="confDel()">Delete</button>
+                            <button class="button2"onclick="closeDel()"">Cancel</button>
                         </div>
                     </form>
                 </div>

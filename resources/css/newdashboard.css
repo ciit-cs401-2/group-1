@@ -23,10 +23,8 @@ a {
 li {
     list-style-type: none;
     text-decoration: none;
-
-
-
 }
+
 .hidden {
     display: none !important;
 }
@@ -39,6 +37,32 @@ li {
     overflow-y: auto;
 }
 
+#logout {
+    border-radius: 1.5vw;
+    background-color: white;
+    z-index: 3;
+    width: 26vw;
+    min-height: fit-content;
+    height: 15vh;
+    display: none;
+    position: fixed;
+    top: 35%;
+    left: 45%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.161);
+    text-align: center;
+}
+
+#logout >  h1 {
+    font-weight: 700;
+    padding-top: 5%;
+    font-family: 'Libre Baskerville';
+    color: #6F4E37;
+    text-align: center;
+}
+
+#logout > .button-group2 {
+    margin-bottom: 4vh;
+}
 
 /* === SIDEBAR === */
 .sidebar {
