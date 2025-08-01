@@ -18,6 +18,14 @@ class DashboardController extends Controller
         }
         
         $posts = $user->contributedPosts()->latest()->get();
-        return view('newdashboard', compact('posts'));
+
+        $analytics = $posts->reduce(function ($carry, $post) {
+            $carry['likes'] += $post->analytics->likes ?? 0;
+            $carry['comments'] += $post->analytics->comments ?? 0;
+            $carry['views'] += $post->analytics->views ?? 0;
+            return $carry;
+        }, ['likes' => 0, 'comments' => 0, 'views' => 0]);
+
+        return view('newdashboard', compact('posts', 'analytics'));
     }
 } 
