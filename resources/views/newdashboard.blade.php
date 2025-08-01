@@ -401,41 +401,41 @@
                             <img class = "countIcon" width="24" height="24" src="https://img.icons8.com/material/24/ffffff/visible--v1.png" alt="visible--v1"/>
                         </div>
                     </div>
-                    @forelse ($posts as $post)
-                        <div class = "postCount">
-                            <div class = "count">
-                                <div class = "postImgContainer countImgContainer">
-                                    <img class="postImg" src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
-                                </div>
-                                <div class = "postDetails countDetails">
-                                    <div class = "postTitleDate">
-                                        <p class="title">{{ $post->title }}</p>
-                                        <p class="date">
-                                            {{ strtoupper($post->status) }} &nbsp;•&nbsp;
-                                            {{ \Carbon\Carbon::parse($post->updated_at)->format('F j, Y') }}
-                                        </p>
+                    <div class = "postCount">
+                        @forelse ($posts as $post)
+                            
+                                <div class = "count">
+                                    <div class = "postImgContainer countImgContainer">
+                                        <img class="postImg" src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
+                                    </div>
+                                    <div class = "postDetails countDetails">
+                                        <div class = "postTitleDate">
+                                            <p class="title">{{ $post->title }}</p>
+                                            <p class="date">
+                                                {{ strtoupper($post->status) }} &nbsp;•&nbsp;
+                                                {{ \Carbon\Carbon::parse($post->updated_at)->format('F j, Y') }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class = "postAnalytics">
+                                        <div class = "likes">
+                                            <img width="24" height="24" src="https://img.icons8.com/ios-filled/24/d16d6a/like.png" alt="like"/>
+                                            <h1>{{ $post->analytics->likes ?? 0 }}</h1>
+                                        </div>
+                                        <div class = "comments">
+                                            <img width="24" height="24" src="https://img.icons8.com/ios-filled/24/77a0e6/speech-bubble-with-dots.png" alt="speech-bubble-with-dots"/>
+                                            <h1>{{ $post->analytics->comments ?? 0 }}</h1>
+                                        </div>
+                                        <div class = "views">
+                                            <img width="24" height="24" src="https://img.icons8.com/material/24/f9d978/visible--v1.png" alt="visible--v1"/>
+                                            <h1>{{ $post->analytics->views ?? 0 }}</h1>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div class = "postAnalytics">
-                                    <div class = "likes">
-                                        <img width="24" height="24" src="https://img.icons8.com/ios-filled/24/d16d6a/like.png" alt="like"/>
-                                        <h1>{{ $post->analytics->likes ?? 0 }}</h1>
-                                    </div>
-                                    <div class = "comments">
-                                        <img width="24" height="24" src="https://img.icons8.com/ios-filled/24/77a0e6/speech-bubble-with-dots.png" alt="speech-bubble-with-dots"/>
-                                        <h1>{{ $post->analytics->comments ?? 0 }}</h1>
-                                    </div>
-                                    <div class = "views">
-                                        <img width="24" height="24" src="https://img.icons8.com/material/24/f9d978/visible--v1.png" alt="visible--v1"/>
-                                        <h1>{{ $post->analytics->views ?? 0 }}</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @empty
-                        <p>No posts found.</p>
-                    @endforelse
+                            @empty
+                            <p>No posts found.</p>
+                        @endforelse
+                    </div>
                 </div>
             </div>
 
