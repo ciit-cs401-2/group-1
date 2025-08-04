@@ -12,10 +12,11 @@ class ExploreController extends Controller
 {
     public function index() //GET
     {
-        $posts = Post::with(['tags', 'contributors'])
-            ->withSum('analytics as total_views', 'views')
+        $posts = Post::select('posts.*')
+            ->with(['tags', 'contributors'])
+            ->leftJoin('analytics', 'analytics.post_id', '=', 'posts.id')
             ->where('status', 'published')
-            ->orderByDesc('published_date')
+            ->orderByDesc('analytics.views')
             ->get();
 
         $featured_post = $posts->first();

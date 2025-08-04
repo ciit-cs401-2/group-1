@@ -116,84 +116,32 @@
     </div>
     <div class="featuredsec">
         <h1>More Posts</h1>
-        <div class="card-container">
-            <div class="card">
-                <img src="https://picsum.photos/id/237/300/200">
-                <div class="card-content">
-                    <p class="tags">#COFFEE #TAGS #HERE</p>
-                    <h3>Article Title</h3>
-                    <p class="info"> JULY 19 2025 | BY JULIANA JIMENO</p>
+        @foreach($posts->chunk(3) as $group)
+                <div class="card-container">
+                    @foreach($group as $post)
+                        <div class="card">
+                            <img src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
+                            <div class="card-content">
+                                <p class="tags">
+                                    @foreach($post->tags as $tag)
+                                        #{{ strtoupper($tag->tag_name) }}
+                                    @endforeach
+                                </p>
+                                <h3>{{ $post->title }}</h3>
+                                <p class="info">
+                                    {{ strtoupper(optional($post->published_date)->format('F d Y')) }} |
+                                    BY {{ strtoupper($post->contributors->first()->name ?? 'UNKNOWN') }}
+                                </p>
+                                <p class="info">
+                                    👍 {{ strtoupper($post->analytics->likes ?? 0) }} |
+                                    💭 {{ strtoupper($post->analytics->comments ?? 0) }} |
+                                    👁‍🗨 {{ strtoupper($post->analytics->views ?? 0) }} |
+                                </p>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-            </div>
-            <div class="card">
-                <img src="https://picsum.photos/id/237/300/200">
-                <div class="card-content">
-                    <p class="tags">#COFFEE #TAGS #HERE</p>
-                    <h3>Article Title</h3>
-                    <p class="info"> JULY 19 2025 | BY JULIANA JIMENO</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="https://picsum.photos/id/237/300/200">
-                <div class="card-content">
-                    <p class="tags">#COFFEE #TAGS #HERE</p>
-                    <h3>Article Title</h3>
-                    <p class="info"> JULY 19 2025 | BY JULIANA JIMENO</p>
-                </div>
-            </div>
-        </div>
-        <div class="card-container">
-            <div class="card">
-                <img src="https://picsum.photos/id/237/300/200">
-                <div class="card-content">
-                    <p class="tags">#COFFEE #TAGS #HERE</p>
-                    <h3>Article Title</h3>
-                    <p class="info"> JULY 19 2025 | BY JULIANA JIMENO</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="https://picsum.photos/id/237/300/200">
-                <div class="card-content">
-                    <p class="tags">#COFFEE #TAGS #HERE</p>
-                    <h3>Article Title</h3>
-                    <p class="info"> JULY 19 2025 | BY JULIANA JIMENO</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="https://picsum.photos/id/237/300/200">
-                <div class="card-content">
-                    <p class="tags">#COFFEE #TAGS #HERE</p>
-                    <h3>Article Title</h3>
-                    <p class="info"> JULY 19 2025 | BY JULIANA JIMENO</p>
-                </div>
-            </div>
-        </div>
-        <div class="card-container">
-            <div class="card">
-                <img src="https://picsum.photos/id/237/300/200">
-                <div class="card-content">
-                    <p class="tags">#COFFEE #TAGS #HERE</p>
-                    <h3>Article Title</h3>
-                    <p class="info"> JULY 19 2025 | BY JULIANA JIMENO</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="https://picsum.photos/id/237/300/200">
-                <div class="card-content">
-                    <p class="tags">#COFFEE #TAGS #HERE</p>
-                    <h3>Article Title</h3>
-                    <p class="info"> JULY 19 2025 | BY JULIANA JIMENO</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="https://picsum.photos/id/237/300/200">
-                <div class="card-content">
-                    <p class="tags">#COFFEE #TAGS #HERE</p>
-                    <h3>Article Title</h3>
-                    <p class="info"> JULY 19 2025 | BY JULIANA JIMENO</p>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
     <div class="footer">
         <img src="\storage\images\icons8-coffee-beans-100.png" style="width: 48px;"></img>
