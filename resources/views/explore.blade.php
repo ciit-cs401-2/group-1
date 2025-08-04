@@ -97,7 +97,7 @@
     </div>
     <div class="main">
         <div class="leftcol">
-            <img src="/storage/images/pexels-chevanon-302901.jpg">
+            <img src="{{ $featured_post->image_data ? route('posts.image', $featured_post->id) : asset('/storage/images/pexels-chevanon-302901.jpg')}}">
         </div>
         <div class="rightcol">
             <p class="tags">

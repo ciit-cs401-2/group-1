@@ -2,12 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Post;
 use App\Models\Tag;
+use App\Models\Post;
 use App\Models\User;
-use App\Models\Analytics;
 use App\Enums\Status;
+use App\Models\Analytics;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
