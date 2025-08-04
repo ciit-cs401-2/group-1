@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Analytics;
+use App\Enums\Status;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -23,11 +24,15 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
         ]);
 
-        Post::factory(5)->create()->each(function ($post) {
-            Analytics::factory()->create([
-                'post_id' => $post->id,
-            ]);
-        });
+        foreach(Status::cases() as $case)
+        {
+            Post::factory(5)->create(['status' => $case])->each(function ($post) {
+                Analytics::factory()->create([
+                    'post_id' => $post->id,
+                ]);
+            });
+        }
+        
         User::factory(2)->create();
 
         $this->assignPostRelationships();

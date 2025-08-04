@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Testing\Fakes\Fake;
+use App\Enums\Status;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
@@ -30,10 +31,3 @@ class PostFactory extends Factory
     }
 }
 
-//This should be in its own file but idk if it should be rn 
-enum Status: string
-{
-    case DRAFT = 'draft';
-    case PUBLISHED = 'published';
-    case ARCHIVED = 'archived';
-}
