@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Http\Controllers\Controller;
+use App\Models\Analytics;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

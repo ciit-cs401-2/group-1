@@ -100,11 +100,17 @@
             <img src="/storage/images/pexels-chevanon-302901.jpg">
         </div>
         <div class="rightcol">
-            <p class="tags">#COFFEE #IDK #SMTH ELSE</p>
-            <h1 class="title">Some Title Here</h1>
-            <p class="description">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+            <p class="tags">
+                @foreach($featured_post->tags as $tag)
+                    #{{ strtoupper($tag->tag_name) }}
+                @endforeach
             </p>
-            <p class="info">JULY 24 2025 | BY JULIANA JIMENO</p>
+            <h1 class="title">{{$featured_post->title}}</h1>
+            <p class="description">{{$featured_post->content}}</p>
+            <p class="info">
+                {{ strtoupper(optional($featured_post->published_date)->format('F d Y')) }} |
+                BY {{ strtoupper($featured_post->contributors->first()->name ?? 'UNKNOWN') }}
+            </p>
             <button class="readmore">Read Article</button>
         </div>
     </div>

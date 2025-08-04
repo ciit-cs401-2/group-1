@@ -105,7 +105,7 @@
                         @if($post->image_data)
                             <img src="{{ route('posts.image', $post->id) }}" alt="Post Image" style="width: 100%; height: auto;">
                         @else
-                            <img src="https://via.placeholder.com/500x400?text=No+Image" alt="Placeholder">
+                            <img src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}" alt="Placeholder">
                         @endif
 
                         <div class="card-content">
@@ -118,6 +118,11 @@
                             <p class="info">
                                 {{ strtoupper(optional($post->published_date)->format('F d Y')) }} |
                                 BY {{ strtoupper($post->contributors->first()->name ?? 'UNKNOWN') }}
+                            </p>
+                            <p class="info">
+                                👍 {{ strtoupper($post->analytics->likes ?? 0) }} |
+                                💭 {{ strtoupper($post->analytics->comments ?? 0) }} |
+                                👁‍🗨 {{ strtoupper($post->analytics->views ?? 0) }} |
                             </p>
                         </div>
                     </div>
