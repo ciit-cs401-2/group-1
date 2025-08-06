@@ -19,21 +19,30 @@
 </head>
 <body>
     <!--========== NAVIGATION BAR ==========-->
-    <nav class = "navbar" class="shadow-md">
-        <div class = "logo">
-            <i class="ri-cup-line"></i>
-            <a href = "index.html" class = "blog_name">Blog Name</a>
-        </div>
-        <div class = "navbar_content">
-                <ul class = "navbar_items">
-                    <li style="padding-right: 1.5rem;"><a href = "#">Home</a></li>
-                    <li style="padding-right: 1.5rem;"><a href = "#">About</a></li>
-                    <li style="padding-right: 1.5rem;"><a href = "#">Contact</a></li>
-                    <button class="btn" onclick="openFormLogIn()">Log In</button>
-                    <button class="btn" onclick="openFormSignUp()">Sign Up</button>
-                </ul>
-        </div>
-    </nav>
+            <div class="header2">
+                <div class="nav">
+                    <div class="logo">
+                        <img src="\storage\images\icons8-coffee-beans-100.png"></img>
+                        <h1>Blog Title</h1>
+                    </div>
+                    <div class="ulcon">
+                        <ul class="ul-nav">
+                            <li>
+                                <a class="li-a" href="#about">ABOUT</a>
+                            </li>
+                            <li>
+                                <a class="li-a" href="#">HOME</a>
+                            </li>
+                            <li>
+                                <a class="li-a" href="#">CONTACT</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="containbutton">
+                        <button class="login" onclick="openFormLogIn()">Log In</button>
+                    </div>
+                </div>
+            </div>
 
     <!--========== ARTICLE IMAGE CONTAINER ==========-->
     <div class = "container">
