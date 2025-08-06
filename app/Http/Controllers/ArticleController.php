@@ -34,16 +34,29 @@ class ArticleController extends Controller
     {
         $query = $request->input('query');
 
-        $posts = Post::with(['contributors', 'tags', 'analytics'])
+        $posts = Post::with(['tags', 'contributors', 'analytics'])
             ->when($query, function ($q) use ($query) {
-                $q->where('title', 'like', '%' . $query . '%')
-                ->orWhere('content', 'like', '%' . $query . '%');
+                $q->where('title', 'like', "%{$query}%")
+                ->orWhere('content', 'like', "%{$query}%");
             })
             ->latest()
             ->get();
 
-        // If there are posts, pick the first one as the featured
-        $featured_post = $posts->first();
+        // Select featured post based on highest view-to-like ratio
+        $featured_post = $posts->filter(function ($post) {
+            $likes = $post->analytics->likes ?? 0;
+            return $likes > 0; // Avoid division by zero
+        })->sortByDesc(function ($post) {
+            $likes = $post->analytics->likes;
+            $views = $post->analytics->views;
+
+            return $views / max($likes, 1); // Prevent divide-by-zero
+        })->first();
+
+        // Fallback in case all posts have 0 likes
+        if (!$featured_post && $posts->isNotEmpty()) {
+            $featured_post = $posts->first();
+        }
 
         return view('explore', compact('posts', 'featured_post'));
     }
