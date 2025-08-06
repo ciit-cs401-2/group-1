@@ -133,9 +133,9 @@
                                     BY {{ strtoupper($post->contributors->first()->name ?? 'UNKNOWN') }}
                                 </p>
                                 <p class="info">
-                                    👍 {{ strtoupper($post->analytics->likes ?? 0) }} |
-                                    💭 {{ strtoupper($post->analytics->comments ?? 0) }} |
-                                    👁‍🗨 {{ strtoupper($post->analytics->views ?? 0) }} |
+                                    <img width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/6f4e37/facebook-like.png" alt="facebook-like"/> {{ strtoupper($post->analytics->likes ?? 0) }} |
+                                    <img width="12" height="12" src="https://img.icons8.com/material-sharp/100/6f4e37/speech-bubble--v1.png" alt="speech-bubble--v1"/> {{ strtoupper($post->analytics->comments ?? 0) }} |
+                                    <img width="24" height="24" src="https://img.icons8.com/external-solid-style-bomsymbols-/24/6f4e37/external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-.png" alt="external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-"/> {{ strtoupper($post->analytics->views ?? 0) }} |
                                 </p>
                             </div>
                         </div>
