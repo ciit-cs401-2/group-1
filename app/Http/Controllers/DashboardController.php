@@ -14,7 +14,7 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         if (!$user) {
-            abort(403, 'Unauthorized');
+            return redirect()->back()->with('access_denied', 'You do not have permission.');
         }
 
         $sortFieldInput = 'updated_at'; // Default values in case

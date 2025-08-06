@@ -30,6 +30,11 @@ Route::get('/newdashboard', [DashboardController::class, 'index'])->middleware('
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
+Route::get('/login', function () {
+    return redirect('/')
+    ->with('access_denied', true);
+});
+
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

@@ -7,12 +7,6 @@
         <p>Not logged in</p>
     @endif (This is just for debugging, can confirm that you're logged in as whoever)--}}
 
-    @if (session('access_denied'))
-        <script>
-            plsLogin();
-        </script>
-    @endif
-
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,6 +20,15 @@
         <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     </head>
     <body>
+
+        @if (session('access_denied'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    plsLogin();
+                });
+            </script>
+        @endif
+
         <div id="plslogin">
             <h1>Please Log In</h1>
             <p>Please log in to access user dashboard</p>
