@@ -96,78 +96,73 @@
                     </div>
                         <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; Manage Posts</p>
                 </div>
-                <div class = "manageSettings">
-                    <div class = "sortOverlay">
-                        <label for = "sortOptions">Sort by: </label>
-                        <select id = "sortOptions">
-                            <option value="" selected disabled hidden></option>
-                            <option value = "title">Title</option>
-                            <option value = "date">Last Edited</option>
-                        </select>
-                        <label for = "sortOrder">Order: </label>
-                        <select id = "sortOrder">
-                            <option value="" selected disabled hidden></option>
-                            <option value = "ascending">Ascending</option>
-                            <option value = "descending">Descending</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="managePosts">
-                    @forelse ($posts as $post)
-                        <div class="post">
-                            <div class="postImgContainer">
-                                <img class="postImg" src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
-                            </div>
-                            <div class="postDetails">
-                                <div class="postTitleDate">
-                                    <p class="title">{{ $post->title }}</p>
-                                    <p class="date">
-                                        {{ strtoupper($post->status) }} &nbsp;•&nbsp;
-                                        {{ \Carbon\Carbon::parse($post->updated_at)->format('F j, Y') }}
-                                    </p>
-                                    <p>Role: {{ $post->pivot->author_role }}</p>
-                                </div>
-                            </div>
-                            <div class="postActions">
-                                <div class="postStatus">
-                                    <div class="displayedStatus border">{{ strtoupper($post->status) }}</div>
-                                    <div class="statusOptions">
-                                        <div data-value="visible" data-display="VISIBLE">Set as Visible</div>
-                                        <div data-value="archive" data-display="ARCHIVED">Move to Archive</div>
-                                    </div>
-                                    <input type="hidden" name="status" value="{{ $post->status }}">
-                                </div>
-                                <a href="#"><img class="postIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
-                            </div>
-                        </div>
-                    @empty
-                        <p>No posts found.</p>
-                    @endforelse
-                </div>
-                <!--<div class = "managePosts">
-                    <div class = "post">
-                        <div class = "postImgContainer">
-                            <img class = "postImg" src = "{{asset('storage/images/coffee2.jpg')}}">
-                        </div>
-                        <div class = "postDetails">
-                            <div class = "postTitleDate">
-                                <p class = "title">Why Starbucks Is Overrated And Sells Awful Drinks Yet I Still Buy From Them</p>
-                                <p class = "date">PUBLISHED &nbsp;• &nbsp;JULY 19, 2025</p>
-                            </div>
-                        </div>
-                        <div class = "postActions">
-                            <div class="postStatus">
-                                <div class="displayedStatus border">VISIBLE</div> /hardcoded. replace this code to the current status of post according to database
-                                <div class="statusOptions">
-                                    <div data-value="visible" data-display="VISIBLE">Set as Visible</div>
-                                    <div data-value="archive" data-display="ARCHIVED">Move to Archive</div>
-                                </div>
-                                <input type="hidden" name="status" value="visible"> /"value = "visible"" to be replaced by dun sa nakalagay sa currentStatus. this is the actual value sent to database
-                                </div>
-                            <a href = "#"><img class = "postIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
+                <form method="GET" action="{{ route('dashboard.sort') }}">
+                    <div class="manageSettings draftSettings">
+                        <div class="sortOverlay">
+                            <label for="sortOptions">Sort by:</label>
+                            <select name="sortOptions" id="sortOptions" onchange="this.form.submit()">
+                                <option value="" disabled {{ !$sortFieldInput ? 'selected' : '' }} hidden></option>
+                                <option value="title" {{ $sortFieldInput == 'title' ? 'selected' : '' }}>Title</option>
+                                <option value="date" {{ $sortFieldInput == 'date' ? 'selected' : '' }}>Last Edited</option>
+                                <option value="published_date" {{ $sortFieldInput == 'published_date' ? 'selected' : '' }}>Published Date</option>
+                            </select>
+
+                            <label for="sortOrder">Order:</label>
+                            <select name="sortOrder" id="sortOrder" onchange="this.form.submit()">
+                                <option value="" disabled {{ !$sortOrder ? 'selected' : '' }} hidden></option>
+                                <option value="asc" {{ $sortOrder == 'asc' ? 'selected' : '' }}>Ascending</option>
+                                <option value="desc" {{ $sortOrder == 'desc' ? 'selected' : '' }}>Descending</option>
+                            </select>
                         </div>
                     </div>
-                </div>-->
+<div class="managePosts">
+    @forelse ($posts as $post)
+        @if ($post->status === 'published')
+            <a href="{{ route('posts.show', $post->id) }}" class="postLinkWrapper" style="text-decoration: none; color: inherit;">
+        @endif
+
+        <div class="post" style="{{ $post->status === 'published' ? 'cursor: pointer;' : '' }}">
+            <div class="postImgContainer">
+                <img class="postImg" src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
+            </div>
+            <div class="postDetails">
+                <div class="postTitleDate">
+                    <p class="title">{{ $post->title }}</p>
+                    <p class="date">
+                        {{ strtoupper($post->status) }} &nbsp;•&nbsp;
+                        {{ \Carbon\Carbon::parse($post->updated_at)->format('F j, Y') }}
+                    </p>
+                    <p>Role: {{ $post->pivot->author_role }}</p>
+                </div>
+            </div>
+            <div class="postActions">
+                <div class="postStatus">
+                    <div class="displayedStatus border
+                        @if($post->status === 'draft') text-yellow-900 border-yellow-900 bg-yellow-200
+                        @elseif($post->status === 'published') text-green-900 border-green-900 bg-green-200
+                        @elseif($post->status === 'archived') text-gray-900 border-gray-900 bg-gray-200
+                        @endif">
+                        {{ strtoupper($post->status) }}
+                    </div>
+                    <div class="statusOptions">
+                        <div data-value="draft" data-display="DRAFT">Set as Draft</div>
+                        <div data-value="published" data-display="PUBLISHED">Publish</div>
+                        <div data-value="archived" data-display="ARCHIVED">Archive</div>
+                    </div>
+                    <input type="hidden" name="status" value="{{ $post->status }}">
+                </div>
+                <a href="#"><img class="postIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
+            </div>
+        </div>
+
+        @if ($post->status === 'published')
+            </a>
+        @endif
+    @empty
+        <p>No posts found.</p>
+    @endforelse
+</div>
+
             </div>
 
             <!-- === CREATE POSTS === -->
@@ -369,22 +364,6 @@
                         <a href = "#">Back to Home</a>
                     </div>
                         <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; Drafts</p>
-                </div>
-                <div class = "manageSettings draftSettings">
-                    <div class = "sortOverlay">
-                        <label for = "sortOptions">Sort by: </label>
-                        <select id = "sortOptions">
-                            <option value="" selected disabled hidden></option>
-                            <option value = "title">Title</option>
-                            <option value = "date">Last Edited</option>
-                        </select>
-                        <label for = "sortOrder">Order: </label>
-                        <select id = "sortOrder">
-                            <option value="" selected disabled hidden></option>
-                            <option value = "ascending">Ascending</option>
-                            <option value = "descending">Descending</option>
-                        </select>
-                    </div>
                 </div>
 
                 <div class="draftPosts">
@@ -649,12 +628,13 @@
                 options.style.display = 'none';
 
                 // tailwind for dynamic styles
-                if (hiddenInput.value === 'visible') {
-                    display.classList.remove('text-gray-900', 'border-gray-900', 'bg-gray-200');
-                    display.classList.add('text-green-900', 'border-green-900', 'bg-green-200');
-                } else if (hiddenInput.value === 'archive') {
-                    display.classList.remove('text-green-900', 'border-green-900', 'bg-green-200');
-                    display.classList.add('text-gray-900', 'border-gray-900', 'bg-gray-200');
+
+                if (hiddenInput.value === 'draft') {
+                    display.className = 'displayedStatus border text-yellow-900 border-yellow-900 bg-yellow-200';
+                } else if (hiddenInput.value === 'published') {
+                    display.className = 'displayedStatus border text-green-900 border-green-900 bg-green-200';
+                } else if (hiddenInput.value === 'archived') {
+                    display.className = 'displayedStatus border text-gray-900 border-gray-900 bg-gray-200';
                 }
             });
         });

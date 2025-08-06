@@ -94,6 +94,33 @@
                 </div>
             </div>
             <p class = "content">{{ $post->content }}</p>
+            <div class = "comments">
+                <h3>Comments</h3>
+                <form class="inputComment">
+                    <textarea class="commentBox" placeholder="Share your thoughts!" name="content" required></textarea>
+                    <div class="buttonWrapper">
+                        <button type="button" class="commentButton">Enter</button>
+                    </div>
+                </form>
+
+                <div>
+                    <div class = "comment">
+                        <div class = "user">
+                            <img width="48" height="48" src="https://img.icons8.com/fluency-systems-filled/48/6f4e37/user-male-circle.png" alt="user-male-circle"/>
+                            <div class= "userDetails">
+                                <p class = "commentAuthor">Dana Alania</p>
+                                <p class = "commentDate">August 7, 2024</p>
+                            </div>
+                        </div>
+                        <p class = "commentContent">Wow, nice!</p>
+                        
+                    </div>
+                    
+                </div>
+                
+
+
+            </div>
         </div>
         <div class = "others">
             <h3>Other Posts</h3>
@@ -148,6 +175,12 @@
                 <h3>No comments</h3>
             @endforelse
         </div>
+    </div>
+    <div class="footer">
+        <img src="\storage\images\icons8-coffee-beans-100.png" style="width: 48px;"></img>
+        <h5>Blog Title</h5>
+        <h6>COPYRIGHT © 2025</h6>
+        <h6><a target="_blank" href="https://icons8.com/icon/oZJK8H59OkPG/coffee-bean">Coffee Bean</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a></h6>
     </div>
 </body>
 </html>

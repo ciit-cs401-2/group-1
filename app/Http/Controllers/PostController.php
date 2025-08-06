@@ -170,5 +170,4 @@ class PostController extends Controller
 
         return redirect('/newdashboard')->with('status', 'Post deleted successfully.');
     }
-
 }
