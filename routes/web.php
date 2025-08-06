@@ -36,6 +36,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::post('/create-post', [PostController::class, 'store'])->name('posts.store');
 
+Route::delete('/destroy-post/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+
 Route::get('/api/check-user/{id}', [UserController::class, 'checkUser']);
 
 Route::get('/article/{id}', [ArticleController::class, 'show'])->name('article.show');

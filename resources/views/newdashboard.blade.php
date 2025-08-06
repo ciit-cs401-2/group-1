@@ -385,9 +385,43 @@
                             <option value = "descending">Descending</option>
                         </select>
                     </div>
-
-
                 </div>
+
+                <div class="draftPosts">
+                    @forelse ($drafts as $draft)
+                        <div class="draft">
+                            <div class="draftImgContainer">
+                                <img class="draftImg" src="{{ $draft->image_data ? route('posts.image', $draft->id) : asset('storage/images/default.jpg') }}">
+                            </div>
+                            <div class="draftDetails">
+                                <div class="draftTitleDate">
+                                    <p class="draftTitle">{{ $draft->title }}</p>
+                                    <p class="draftDate">
+                                        Last Updated &nbsp;
+                                        {{ \Carbon\Carbon::parse($draft->updated_at)->format('F j, Y') }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class = "draftActions">
+                                <button onclick = "changeContent('create', this)">
+                                    <img class = "draftIcons" width="32" height="24" src="https://img.icons8.com/material-rounded/24/FAB005/edit.png" alt="edit"/>
+                                </button>
+                                <form action="{{ route('posts.destroy', $draft->id) }}" method="POST" style="display:inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button style="background: none; border: none; padding: 0; cursor: pointer;" type="submit">
+                                        <img class = "draftIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/>
+                                    </button >
+                                </form>
+                            </div>
+                        </div>
+                    @empty
+                        <p>No posts found.</p>
+                    @endforelse
+                </div>
+
+
+{{-- 
                 <div class = "draftPosts">
                     <div class = "draft">
                         <div class = "draftImgContainer">
@@ -403,13 +437,10 @@
                             <a href = "#"><img class = "draftIcons" width="24" height="24" src="https://img.icons8.com/material-rounded/24/FAB005/edit.png" alt="edit"/></a>
                             <a href = "#"><img class = "draftIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
                         </div>
-
                     </div>
+                </div> 
+--}}
 
-
-
-
-                </div>
             </div>
 
             <!--- === ANALYTICS === --->

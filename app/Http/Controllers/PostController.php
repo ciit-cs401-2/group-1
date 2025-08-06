@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Analytics;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Tag;
@@ -140,6 +141,22 @@ class PostController extends Controller
         $otherPosts = Post::where('id', '!=', $id)->latest()->take(4)->get();
 
         return view('article', compact('post', 'otherPosts'));
+    }
+
+    public function destroy($id)
+    {
+        $post = Post::find($id);
+
+        if (!$post) {
+            abort(404, 'Post not found.');
+        }
+
+        $post->tags()->detach();
+        $post->users()->detach();
+        $post->analytics()->delete();
+        $post->delete();
+
+        return redirect('/newdashboard')->with('status', 'Post deleted successfully.');
     }
 
 }

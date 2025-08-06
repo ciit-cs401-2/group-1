@@ -18,6 +18,7 @@ class DashboardController extends Controller
         }
         
         $posts = $user->contributedPosts()->latest()->get();
+        $drafts = $posts->where('status', 'draft');
 
         $analytics = $posts->reduce(function ($carry, $post) {
             $carry['likes'] += $post->analytics->likes ?? 0;
@@ -26,6 +27,6 @@ class DashboardController extends Controller
             return $carry;
         }, ['likes' => 0, 'comments' => 0, 'views' => 0]);
 
-        return view('newdashboard', compact('posts', 'analytics'));
+        return view('newdashboard', compact('posts', 'analytics', 'drafts'));
     }
 } 
