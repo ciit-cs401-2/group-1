@@ -115,97 +115,119 @@
                             </select>
                         </div>
                     </div>
-<div class="managePosts">
-    @forelse ($posts as $post)
-        @if ($post->status === 'published')
-            <a href="{{ route('posts.show', $post->id) }}" class="postLinkWrapper" style="text-decoration: none; color: inherit;">
-        @endif
+                    <div class="managePosts">
+                        @forelse ($posts as $post)
+                            <div class="postLinkWrapper" style="text-decoration: none; color: inherit;">
+                                <div class="post" style="position: relative; cursor: {{ in_array($post->status, ['published', 'archived']) ? 'pointer' : 'default' }};">
+                                    
+                                    {{-- Make entire post clickable only if published or archived --}}
+                                    @if (in_array($post->status, ['published', 'archived']))
+                                        <a href="{{ route('article.show', $post->id) }}" style="position: absolute; inset: 0; z-index: 1;"></a>
+                                    @endif
 
-        <div class="post" style="{{ $post->status === 'published' ? 'cursor: pointer;' : '' }}">
-            <div class="postImgContainer">
-                <img class="postImg" src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
-            </div>
-            <div class="postDetails">
-                <div class="postTitleDate">
-                    <p class="title">{{ $post->title }}</p>
-                    <p class="date">
-                        {{ strtoupper($post->status) }} &nbsp;•&nbsp;
-                        {{ \Carbon\Carbon::parse($post->updated_at)->format('F j, Y') }}
-                    </p>
-                    <p>Role: {{ $post->pivot->author_role }}</p>
-                </div>
-            </div>
-            <div class="postActions">
-                <div class="postStatus">
-                    <div class="displayedStatus border
-                        @if($post->status === 'draft') text-yellow-900 border-yellow-900 bg-yellow-200
-                        @elseif($post->status === 'published') text-green-900 border-green-900 bg-green-200
-                        @elseif($post->status === 'archived') text-gray-900 border-gray-900 bg-gray-200
-                        @endif">
-                        {{ strtoupper($post->status) }}
+                                    <div class="postImgContainer" style="position: relative; z-index: 2;">
+                                        <img class="postImg"
+                                            src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
+                                    </div>
+
+                                    <div class="postDetails" style="position: relative; z-index: 2;">
+                                        <div class="postTitleDate">
+                                            <p class="title">{{ $post->title }}</p>
+                                            <p class="date">
+                                                {{ strtoupper($post->status) }} &nbsp;•&nbsp;
+                                                {{ \Carbon\Carbon::parse($post->updated_at)->format('F j, Y') }}
+                                            </p>
+                                            <p>Role: {{ $post->pivot->author_role }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="postActions" style="position: relative; z-index: 2;">
+                                        <div class="postStatus">
+                                            <div class="displayedStatus border
+                                                @if($post->status === 'draft') text-yellow-900 border-yellow-900 bg-yellow-200
+                                                @elseif($post->status === 'published') text-green-900 border-green-900 bg-green-200
+                                                @elseif($post->status === 'archived') text-gray-900 border-gray-900 bg-gray-200
+                                                @endif">
+                                                {{ strtoupper($post->status) }}
+                                            </div>
+                                            <div class="statusOptions">
+                                                <div data-value="draft" data-display="DRAFT">Set as Draft</div>
+                                                <div data-value="published" data-display="PUBLISHED">Publish</div>
+                                                <div data-value="archived" data-display="ARCHIVED">Archive</div>
+                                            </div>
+                                            <input type="hidden" name="status" value="{{ $post->status }}">
+                                        </div>
+                                        <a href="#">
+                                            <img class="postIcons" width="24" height="24"
+                                                src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png"
+                                                alt="filled-trash"/>
+                                        </a>
+                                    </div>
+
+                                </div> {{-- /.post --}}
+                            </div> {{-- /.postLinkWrapper --}}
+                        @empty
+                            <p>No posts found.</p>
+                        @endforelse
                     </div>
-                    <div class="statusOptions">
-                        <div data-value="draft" data-display="DRAFT">Set as Draft</div>
-                        <div data-value="published" data-display="PUBLISHED">Publish</div>
-                        <div data-value="archived" data-display="ARCHIVED">Archive</div>
-                    </div>
-                    <input type="hidden" name="status" value="{{ $post->status }}">
-                </div>
-                <a href="#"><img class="postIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
-            </div>
-        </div>
-
-        @if ($post->status === 'published')
-            </a>
-        @endif
-    @empty
-        <p>No posts found.</p>
-    @endforelse
-</div>
-
             </div>
 
             <!-- === CREATE POSTS === -->
-            <div id="create" class="hidden">
+            <div id="create" class="{{ isset($editingDraft) ? '' : 'hidden' }}">
                 <div class="createHeading">
                     <div class="createHeadingText">
-                        <h1>Create Post</h1>
+                        <h1>{{ isset($editingDraft) ? 'Edit Draft' : 'Create Post' }}</h1>
                         <a href="/">Back to Home</a>
                     </div>
-                    <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; Create a Post</p>
+                    <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; {{ isset($editingDraft) ? 'Edit Draft' : 'Create a Post' }}</p>
                 </div>
 
-                <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
+                <form method="POST"
+                    action="{{ isset($editingDraft) ? route('posts.update', $post->id) : route('posts.store') }}"
+                    enctype="multipart/form-data">
                     @csrf
+                    @if(isset($editingDraft))
+                        @method('PUT')
+                    @endif
                     <div class="formcontainer">
                         <br>
                         <label for="input-file" id="drop-area">
                             <input type="file" accept="image/*" id="input-file" name="image" hidden>
                             <div id="img-view">
-                                <img src="\storage\images\icons8-cloud-upload-100.png">
+                                <img src="{{ isset($editingDraft) && $post->image ? asset('storage/' . $post->image) : '/storage/images/icons8-cloud-upload-100.png' }}">
                                 <p>DRAG AND DROP OR CLICK</p>
                                 <span>Upload an image from computer</span>
                             </div>
                         </label>
 
                         <label for="title">Title</label>
-                        <input type="text" placeholder="Enter title here" name="title" required>
+                        <input type="text"
+                            placeholder="Enter title here"
+                            name="title"
+                            value="{{ old('title', $post->title ?? '') }}"
+                            required>
 
                         <label for="content">Content</label>
-                        <textarea placeholder="Share your thoughts here" name="content" required></textarea>
+                        <textarea placeholder="Share your thoughts here"
+                                name="content"
+                                required>{{ old('content', $post->content ?? '') }}</textarea>
 
                         <label for="contributor">Contributor IDs</label>
                         <div class="cont-input">
                             <ul id="contributors"></ul>
-                            <input type="number" id="input-contributor" placeholder="Enter the names of contributors and press the enter key to confirm" />
-                            <input type="hidden" name="contributors" value="[]">
+                            <input type="number" id="input-contributor"
+                                placeholder="Enter the names of contributors and press the enter key to confirm" />
+                            <input type="hidden" name="contributors"
+                                value='@json($post->contributors->pluck("id") ?? [])'>
                         </div>
 
                         <label for="tags">Tags</label>
                         <div class="tags-input">
                             <ul id="tags"></ul>
-                            <input type="text" id="input-tag" placeholder="Enter tag and press the enter key to confirm" />
-                            <input type="hidden" name="tags" value="[]">
+                            <input type="text" id="input-tag"
+                                placeholder="Enter tag and press the enter key to confirm" />
+                            <input type="hidden" name="tags"
+                                value='@json($post->tags->pluck("name") ?? [])'>
                         </div>
 
                         <div class="button-group">
@@ -218,141 +240,148 @@
 
                 {{-- JS Section --}}
                 <script>
-                    const dropArea = document.getElementById("drop-area");
-                    const inputFile = document.getElementById("input-file");
-                    const imageView = document.getElementById("img-view");
+                    document.addEventListener('DOMContentLoaded', function () {
+                        @if(isset($editingDraft))
+                            document.querySelector('#create')?.classList.remove('hidden');
+                            document.querySelector('#manage')?.classList.add('hidden');
+                        @endif
 
-                    inputFile.addEventListener("change", uploadImage);
+                        const dropArea = document.getElementById("drop-area");
+                        const inputFile = document.getElementById("input-file");
+                        const imageView = document.getElementById("img-view");
 
-                    function uploadImage() {
-                        let imgLink = URL.createObjectURL(inputFile.files[0]);
-                        imageView.style.backgroundImage = `url(${imgLink})`;
-                        imageView.textContent = " ";
-                        imageView.style.border = "none";
-                        imageView.style.backgroundSize = "cover";
-                        imageView.style.backgroundPosition = "center";
-                        imageView.style.backgroundRepeat = "no-repeat";
-                    }
+                        inputFile.addEventListener("change", uploadImage);
 
-                    dropArea.addEventListener("dragover", function (e) {
-                        e.preventDefault();
-                    });
-                    dropArea.addEventListener("drop", function (e) {
-                        e.preventDefault();
-                        inputFile.files = e.dataTransfer.files;
-                        uploadImage();
-                    });
+                        function uploadImage() {
+                            let imgLink = URL.createObjectURL(inputFile.files[0]);
+                            imageView.style.backgroundImage = `url(${imgLink})`;
+                            imageView.textContent = " ";
+                            imageView.style.border = "none";
+                            imageView.style.backgroundSize = "cover";
+                            imageView.style.backgroundPosition = "center";
+                            imageView.style.backgroundRepeat = "no-repeat";
+                        }
 
-                    const conts = document.getElementById('contributors'); // UL element
-                    const inputc = document.getElementById('input-contributor'); // Input field
-                    const hiddenContributors = document.querySelector('input[name="contributors"]'); // Hidden input
+                        dropArea.addEventListener("dragover", function (e) {
+                            e.preventDefault();
+                        });
+                        dropArea.addEventListener("drop", function (e) {
+                            e.preventDefault();
+                            inputFile.files = e.dataTransfer.files;
+                            uploadImage();
+                        });
 
-                    // Add contributor when Enter is pressed
-                    inputc.addEventListener('keydown', function (event) {
-                        if (event.key === 'Enter') {
-                            event.preventDefault();
-                            const contContent = inputc.value.trim();
-                            const contributorId = parseInt(contContent, 10);
+                        const conts = document.getElementById('contributors'); // UL element
+                        const inputc = document.getElementById('input-contributor'); // Input field
+                        const hiddenContributors = document.querySelector('input[name="contributors"]'); // Hidden input
 
-                            // Validate: must be numeric, positive
-                            if (!contContent || isNaN(contributorId) || contributorId < 0) {
-                                alert("Please enter a valid positive integer contributor ID.");
-                                inputc.value = '';
-                                return;
-                            }
+                        // Add contributor when Enter is pressed
+                        inputc.addEventListener('keydown', function (event) {
+                            if (event.key === 'Enter') {
+                                event.preventDefault();
+                                const contContent = inputc.value.trim();
+                                const contributorId = parseInt(contContent, 10);
 
-                            // Prevent duplicate entries
-                            const existingIds = Array.from(conts.querySelectorAll('li')).map(li => li.dataset.id);
-                            if (existingIds.includes(String(contributorId))) {
-                                alert("This contributor ID has already been added.");
-                                inputc.value = '';
-                                return;
-                            }
+                                // Validate: must be numeric, positive
+                                if (!contContent || isNaN(contributorId) || contributorId < 0) {
+                                    alert("Please enter a valid positive integer contributor ID.");
+                                    inputc.value = '';
+                                    return;
+                                }
 
-                            // Backend check: does the user ID exist?
-                            fetch(`/api/check-user/${contributorId}`)
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.exists) {
-                                        const cont = document.createElement('li');
-                                        cont.setAttribute('data-id', contributorId);
-                                        cont.textContent = contributorId;
+                                // Prevent duplicate entries
+                                const existingIds = Array.from(conts.querySelectorAll('li')).map(li => li.dataset.id);
+                                if (existingIds.includes(String(contributorId))) {
+                                    alert("This contributor ID has already been added.");
+                                    inputc.value = '';
+                                    return;
+                                }
 
-                                        const delBtn = document.createElement('button');
-                                        delBtn.textContent = ' x';
-                                        delBtn.classList.add('delete-button');
-                                        delBtn.addEventListener('click', () => {
-                                            cont.remove();
+                                // Backend check: does the user ID exist?
+                                fetch(`/api/check-user/${contributorId}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.exists) {
+                                            const cont = document.createElement('li');
+                                            cont.setAttribute('data-id', contributorId);
+                                            cont.textContent = contributorId;
+
+                                            const delBtn = document.createElement('button');
+                                            delBtn.textContent = ' x';
+                                            delBtn.classList.add('delete-button');
+                                            delBtn.addEventListener('click', () => {
+                                                cont.remove();
+                                                updateContributorsHidden();
+                                            });
+
+                                            cont.appendChild(delBtn);
+                                            conts.appendChild(cont);
                                             updateContributorsHidden();
-                                        });
+                                        } else {
+                                            alert("This contributor ID does not exist.");
+                                        }
+                                        inputc.value = '';
+                                    })
+                                    .catch(error => {
+                                        console.error('Error checking contributor:', error);
+                                        alert("An error occurred while checking the contributor.");
+                                        inputc.value = '';
+                                    });
+                            }
+                        });
 
-                                        cont.appendChild(delBtn);
-                                        conts.appendChild(cont);
-                                        updateContributorsHidden();
-                                    } else {
-                                        alert("This contributor ID does not exist.");
-                                    }
-                                    inputc.value = '';
-                                })
-                                .catch(error => {
-                                    console.error('Error checking contributor:', error);
-                                    alert("An error occurred while checking the contributor.");
-                                    inputc.value = '';
-                                });
+                        // Remove contributor
+                        conts.addEventListener('click', function (event) {
+                            if (event.target.classList.contains('delete-button')) {
+                                event.target.parentNode.remove();
+                                updateContributorsHidden();
+                            }
+                        });
+
+                        // Update the hidden input with an array of contributor IDs
+                        function updateContributorsHidden() {
+                            const contributorIds = Array.from(conts.querySelectorAll('li')).map(li => li.dataset.id);
+                            hiddenContributors.value = JSON.stringify(contributorIds);
+                            console.log('Contributors:', hiddenContributors.value); // Corrected debug log
                         }
-                    });
 
-                    // Remove contributor
-                    conts.addEventListener('click', function (event) {
-                        if (event.target.classList.contains('delete-button')) {
-                            event.target.parentNode.remove();
+                        // Force update right before form submission
+                        const form = document.querySelector('form');
+                        form.addEventListener('submit', function () {
                             updateContributorsHidden();
-                        }
-                    });
+                        });
 
-                    // Update the hidden input with an array of contributor IDs
-                    function updateContributorsHidden() {
-                        const contributorIds = Array.from(conts.querySelectorAll('li')).map(li => li.dataset.id);
-                        hiddenContributors.value = JSON.stringify(contributorIds);
-                        console.log('Contributors:', hiddenContributors.value); // Corrected debug log
-                    }
+                        const tagsUl = document.getElementById('tags');
+                        const inputTag = document.getElementById('input-tag');
+                        const hiddenTags = document.querySelector('input[name="tags"]');
 
-                    // Force update right before form submission
-                    const form = document.querySelector('form');
-                    form.addEventListener('submit', function () {
-                        updateContributorsHidden();
-                    });
+                        inputTag.addEventListener('keydown', function (event) {
+                            if (event.key === 'Enter') {
+                                event.preventDefault();
+                                const tagContent = inputTag.value.trim();
+                                if (tagContent !== '') {
+                                    const tag = document.createElement('li');
+                                    tag.textContent = tagContent;
+                                    tag.innerHTML += '<button class="delete-button"> x</button>';
+                                    tagsUl.appendChild(tag);
+                                    inputTag.value = '';
+                                    updateTagsHidden();
+                                }
+                            }
+                        });
 
-                    const tagsUl = document.getElementById('tags');
-                    const inputTag = document.getElementById('input-tag');
-                    const hiddenTags = document.querySelector('input[name="tags"]');
-
-                    inputTag.addEventListener('keydown', function (event) {
-                        if (event.key === 'Enter') {
-                            event.preventDefault();
-                            const tagContent = inputTag.value.trim();
-                            if (tagContent !== '') {
-                                const tag = document.createElement('li');
-                                tag.textContent = tagContent;
-                                tag.innerHTML += '<button class="delete-button"> x</button>';
-                                tagsUl.appendChild(tag);
-                                inputTag.value = '';
+                        tagsUl.addEventListener('click', function (event) {
+                            if (event.target.classList.contains('delete-button')) {
+                                event.target.parentNode.remove();
                                 updateTagsHidden();
                             }
+                        });
+
+                        function updateTagsHidden() {
+                            const tags = Array.from(tagsUl.querySelectorAll('li')).map(li => li.firstChild.textContent.trim());
+                            hiddenTags.value = JSON.stringify(tags);
                         }
                     });
-
-                    tagsUl.addEventListener('click', function (event) {
-                        if (event.target.classList.contains('delete-button')) {
-                            event.target.parentNode.remove();
-                            updateTagsHidden();
-                        }
-                    });
-
-                    function updateTagsHidden() {
-                        const tags = Array.from(tagsUl.querySelectorAll('li')).map(li => li.firstChild.textContent.trim());
-                        hiddenTags.value = JSON.stringify(tags);
-                    }
                 </script>
             </div>
 
@@ -381,16 +410,20 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class = "draftActions">
-                                <button onclick = "changeContent('create', this)">
-                                    <img class = "draftIcons" width="32" height="24" src="https://img.icons8.com/material-rounded/24/FAB005/edit.png" alt="edit"/>
-                                </button>
+                            <div class="draftActions">
+                                <a href="{{ route('posts.editDraft', $draft->id) }}">
+                                    <img class="draftIcons" width="32" height="24"
+                                        src="https://img.icons8.com/material-rounded/24/FAB005/edit.png"
+                                        alt="edit" />
+                                </a>
                                 <form action="{{ route('posts.destroy', $draft->id) }}" method="POST" style="display:inline">
                                     @csrf
                                     @method('DELETE')
                                     <button style="background: none; border: none; padding: 0; cursor: pointer;" type="submit">
-                                        <img class = "draftIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/>
-                                    </button >
+                                        <img class="draftIcons" width="24" height="24"
+                                            src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png"
+                                            alt="filled-trash" />
+                                    </button>
                                 </form>
                             </div>
                         </div>
@@ -398,28 +431,6 @@
                         <p>No posts found.</p>
                     @endforelse
                 </div>
-
-
-{{-- 
-                <div class = "draftPosts">
-                    <div class = "draft">
-                        <div class = "draftImgContainer">
-                            <img class = "draftImg" src = "{{asset('storage/images/coffee2.jpg')}}">
-                        </div>
-                        <div class = "draftDetails">
-                            <div class = "draftTitleDate">
-                                <p class = "draftTitle">draftttt</p>
-                                <p class = "draftDate">PUBLISHED &nbsp;• &nbsp;JULY 19, 2025</p>
-                            </div>
-                        </div>
-                        <div class = "draftActions">
-                            <a href = "#"><img class = "draftIcons" width="24" height="24" src="https://img.icons8.com/material-rounded/24/FAB005/edit.png" alt="edit"/></a>
-                            <a href = "#"><img class = "draftIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
-                        </div>
-                    </div>
-                </div> 
---}}
-
             </div>
 
             <!--- === ANALYTICS === --->
