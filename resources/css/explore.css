@@ -158,7 +158,14 @@
     margin: .5vw;
 }
 
+.image-container {
+    height: 300px;
+    overflow: hidden;
+  }
+
 .card img {
+    object-fit: cover;
+    min-height: auto;
     width: 100%;
     user-select: none;
 }

@@ -120,7 +120,9 @@
                 <div class="card-container">
                     @foreach($group as $post)
                         <div class="card">
-                            <img src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
+                            <div class="image-container">
+                                <img src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
+                            </div>
                             <div class="card-content">
                                 <p class="tags">
                                     @foreach($post->tags as $tag)
