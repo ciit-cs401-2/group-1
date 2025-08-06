@@ -16,6 +16,10 @@ class DashboardController extends Controller
         if (!$user) {
             abort(403, 'Unauthorized');
         }
+
+        $sortFieldInput = 'updated_at'; // Default values in case
+        $sortOrder = 'desc';
+
         
         $posts = $user->contributedPosts()->latest()->get();
         $drafts = $posts->where('status', 'draft');
@@ -27,7 +31,7 @@ class DashboardController extends Controller
             return $carry;
         }, ['likes' => 0, 'comments' => 0, 'views' => 0]);
 
-        return view('newdashboard', compact('posts', 'analytics', 'drafts'));
+        return view('newdashboard', compact('posts', 'analytics', 'drafts', 'sortFieldInput', 'sortOrder'));
     }
 
     public function sortPosts(Request $request) {

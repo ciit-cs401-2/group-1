@@ -96,26 +96,26 @@
                     </div>
                         <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; Manage Posts</p>
                 </div>
-<form method="GET" action="{{ route('dashboard.sort') }}">
-    <div class="manageSettings draftSettings">
-        <div class="sortOverlay">
-            <label for="sortOptions">Sort by:</label>
-            <select name="sortOptions" id="sortOptions" onchange="this.form.submit()">
-                <option value="" disabled {{ !$sortFieldInput ? 'selected' : '' }} hidden></option>
-                <option value="title" {{ $sortFieldInput == 'title' ? 'selected' : '' }}>Title</option>
-                <option value="date" {{ $sortFieldInput == 'date' ? 'selected' : '' }}>Last Edited</option>
-                <option value="published_date" {{ $sortFieldInput == 'published_date' ? 'selected' : '' }}>Published Date</option>
-            </select>
+                <form method="GET" action="{{ route('dashboard.sort') }}">
+                    <div class="manageSettings draftSettings">
+                        <div class="sortOverlay">
+                            <label for="sortOptions">Sort by:</label>
+                            <select name="sortOptions" id="sortOptions" onchange="this.form.submit()">
+                                <option value="" disabled {{ !$sortFieldInput ? 'selected' : '' }} hidden></option>
+                                <option value="title" {{ $sortFieldInput == 'title' ? 'selected' : '' }}>Title</option>
+                                <option value="date" {{ $sortFieldInput == 'date' ? 'selected' : '' }}>Last Edited</option>
+                                <option value="published_date" {{ $sortFieldInput == 'published_date' ? 'selected' : '' }}>Published Date</option>
+                            </select>
 
-            <label for="sortOrder">Order:</label>
-            <select name="sortOrder" id="sortOrder" onchange="this.form.submit()">
-                <option value="" disabled {{ !$sortOrder ? 'selected' : '' }} hidden></option>
-                <option value="asc" {{ $sortOrder == 'asc' ? 'selected' : '' }}>Ascending</option>
-                <option value="desc" {{ $sortOrder == 'desc' ? 'selected' : '' }}>Descending</option>
-            </select>
-        </div>
-    </div>
-</form>
+                            <label for="sortOrder">Order:</label>
+                            <select name="sortOrder" id="sortOrder" onchange="this.form.submit()">
+                                <option value="" disabled {{ !$sortOrder ? 'selected' : '' }} hidden></option>
+                                <option value="asc" {{ $sortOrder == 'asc' ? 'selected' : '' }}>Ascending</option>
+                                <option value="desc" {{ $sortOrder == 'desc' ? 'selected' : '' }}>Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
                 <div class="managePosts">
                     @forelse ($posts as $post)
                         <div class="post">
