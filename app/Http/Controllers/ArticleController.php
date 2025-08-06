@@ -24,6 +24,7 @@ class ArticleController extends Controller
         $post = Post::with(['tags', 'contributors', 'analytics', 'comments'])->findOrFail($id);
         $otherPosts = Post::where('id', '!=', $id)->take(4)->get();
 
+        $post->increment('views');
         return view('article', compact('post'));
     }
 

@@ -62,6 +62,7 @@
     font-size: 2em;
     font-family: 'Libre Baskerville';
     padding-top: 3%;
+    cursor: pointer;
 }
 
 .rightcol > .description {

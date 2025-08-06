@@ -116,7 +116,9 @@
                     #{{ strtoupper($tag->tag_name) }}
                 @endforeach
             </p>
-            <h1 class="title">{{$featured_post->title}}</h1>
+            <a class="title" href="{{ route('article.show', ['id' => $featured_post->id]) }}">
+                <h1>{{$featured_post->title}}</h1>
+            </a>
             <p class="description">{{$featured_post->content}}</p>
             <p class="info">
                 {{ strtoupper(optional($featured_post->published_date)->format('F d Y')) }} |
