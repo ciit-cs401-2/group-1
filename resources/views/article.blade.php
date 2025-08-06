@@ -28,13 +28,13 @@
                     <div class="ulcon">
                         <ul class="ul-nav">
                             <li>
-                                <a class="li-a" href="#about">ABOUT</a>
+                                <a class="li-a" href="{{ route('explore') }}">EXPLORE</a>
                             </li>
                             <li>
-                                <a class="li-a" href="#">HOME</a>
+                                <a class="li-a" href="{{ route('home')}}">HOME</a>
                             </li>
                             <li>
-                                <a class="li-a" href="#">CONTACT</a>
+                                <a class="li-a" href="{{ route('newdashboard')}}">DASHBOARD</a>
                             </li>
                         </ul>
                     </div>
@@ -59,10 +59,39 @@
             <div class = "containerImg">
                 <img class="postImg" src="{{ route('posts.image', ['id' => $post->id]) }}" alt="Post Image">
             </div>
-            <div class="tags">
-                @foreach ($post->tags as $tag)
-                    <span class="tag">{{ $tag->tag_name }}</span>
-                @endforeach
+            <div class = tagsContainer>
+                <div class = "analytics">
+                    <div class = "numbers">
+                        <img id="likeIcon" width="24" height="24" src="https://img.icons8.com/fluency-systems-regular/24/6f4e37/facebook-like.png"  alt="facebook-like" class="w-6 h-6 cursor-pointer transition-all duration-200"/>
+
+                        <p>123</p>
+                    </div>
+                    <div class = "numbers">
+                        <img width="24" height="24" src="https://img.icons8.com/material-sharp/100/6f4e37/speech-bubble--v1.png" alt="speech-bubble--v1"/>
+                        <p>122342343</p>
+                    </div>
+                    <div class = "numbers">
+                        <img width="24" height="24" src="https://img.icons8.com/external-solid-style-bomsymbols-/24/6f4e37/external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-.png" alt="external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-"/>
+                
+                        <p>122342343</p>
+                    </div>
+                    <script>
+                        const likeIcon = document.getElementById('likeIcon');
+                        let liked = false;
+
+                        likeIcon.addEventListener('click', () => {
+                            liked = !liked;
+                            likeIcon.src = liked 
+                            ? 'https://img.icons8.com/fluency-systems-filled/24/6f4e37/facebook-like.png' 
+                            : 'https://img.icons8.com/fluency-systems-regular/24/6f4e37/facebook-like.png'; 
+                        });
+                    </script>
+                </div>
+                <div class="tags">
+                    @foreach ($post->tags as $tag)
+                        <span class="tag">{{ $tag->tag_name }}</span>
+                    @endforeach
+                </div>
             </div>
             <p class = "content">{{ $post->content }}</p>
         </div>
