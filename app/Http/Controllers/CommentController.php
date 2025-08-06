@@ -26,7 +26,7 @@ class CommentController extends Controller
         Comment::create([
             'user_id' => $user->id,
             'post_id' => $request->post_id,
-            'content' => $request->content,
+            'content' => trim($request->content),
         ]);
 
         Post::find($request->post_id)->analytics->increment('comments');

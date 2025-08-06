@@ -27,8 +27,8 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
         ]);
 
-        $amount_of_users = 10;
-        $amount_of_posts = 10;
+        $amount_of_users = 40;
+        $amount_of_posts = 20;
 
         User::factory($amount_of_users)->create();
 
@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
                 ->create(['status' => $case])
                 ->each(function ($post) use ($amount_of_users){
 
-                    $amount_of_comments = rand(0, floor($amount_of_users * 0.2));
+                    $amount_of_comments = rand(0, floor($amount_of_users * 0.4));
 
                     for($i = 0; $i < $amount_of_comments; $i++)
                         Comment::factory()->create([

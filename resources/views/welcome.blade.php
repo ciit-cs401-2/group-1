@@ -29,6 +29,14 @@
             </script>
         @endif
 
+        @if ($errors->has('email'))
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    incorrectCred();
+                });
+            </script>
+        @endif
+
         <div id="plslogin">
             <h1>Please Log In</h1>
             <p>Please log in to access user dashboard</p>
@@ -50,7 +58,7 @@
                 <label for="password"><b>Password</b></label>
                 <input type="password" placeholder="Enter password" name="password" required></input>
 
-                <button type="submit" class="button" onclick="incorrectCred()">Log In</button>
+                <button type="submit" class="button" onclick="">Log In</button>
                 <button type="button" class="button cancel" onclick="closeFormLogIn()">Cancel</button>
                 <p onclick="window.location='{{ url('register') }}'">Create an Account</p>
             </form>
@@ -115,9 +123,9 @@
                     </div>
                     <div class="containbutton">
                         @if(Auth::check())
-                            <form method="POST" action="{{ route('logout') }}">
+                            <form method="POST" action="{{ route('newdashboard') }}">
                                 @csrf
-                                <button type="submit" class="login">Log Out</button>
+                                <button type="submit" class="login">Back to Dashboard</button>
                             </form>
                         @else
                             <button class="login" onclick="openFormLogIn()">Log In</button>
