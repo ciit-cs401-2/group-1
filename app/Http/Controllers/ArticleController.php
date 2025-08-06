@@ -21,11 +21,28 @@ class ArticleController extends Controller
     }
 
     public function show($id) {
-        $post = Post::with(['tags', 'contributors', 'analytics', 'comments'])->findOrFail($id);
-        $otherPosts = Post::where('id', '!=', $id)->take(4)->get();
+        $post = Post::with(['tags', 'contributors', 'analytics'])
+            ->whereIn('status', ['published', 'archived'])
+            ->findOrFail($id);
 
-        $post->increment('views');
-        return view('article', compact('post'));
+        // Increment view count
+        if ($post->analytics) {
+            $post->analytics->increment('views');
+        } else {
+            $post->analytics()->create([
+                'views' => 1,
+                'likes' => 0,
+                'comments' => 0
+            ]);
+        }
+
+        $otherPosts = Post::where('id', '!=', $id)
+            ->where('status', 'published')
+            ->latest()
+            ->take(4)
+            ->get();
+
+        return view('article', compact('post', 'otherPosts'));
     }
 
     public function explore(Request $request)
@@ -58,4 +75,5 @@ class ArticleController extends Controller
 
         return view('explore', compact('posts', 'featured_post'));
     }
+
 }

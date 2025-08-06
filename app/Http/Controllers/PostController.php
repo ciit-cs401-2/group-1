@@ -170,4 +170,14 @@ class PostController extends Controller
 
         return redirect('/newdashboard')->with('status', 'Post deleted successfully.');
     }
+
+    public function editDraft($id)
+    {
+        $post = Post::with(['tags', 'contributors'])->where('status', 'draft')->findOrFail($id);
+
+        return view('newdashboard', [
+            'editingDraft' => true,
+            'post' => $post
+        ]);
+    }
 }

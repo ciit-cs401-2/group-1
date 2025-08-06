@@ -152,35 +152,6 @@
                 @endforelse
             </div>
         </div>
-        <!--<div class="featuredsec">
-            <h1>FEATURED POSTS</h1>
-            <div class="card-container">
-                <div class="card">
-                    <img src="https://picsum.photos/id/237/500/400">
-                    <div class="card-content">
-                        <p class="tags">#COFFEE #TAGS #HERE</p>
-                        <h3>Article Title</h3>
-                        <p class="info"> JULY 19 2025 | BY JULIANA JIMENO</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://picsum.photos/id/237/500/400">
-                    <div class="card-content">
-                        <p class="tags">#COFFEE #TAGS #HERE</p>
-                        <h3>Article Title</h3>
-                        <p class="info"> JULY 19 2025 | BY JULIANA JIMENO</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="https://picsum.photos/id/237/500/400">
-                    <div class="card-content">
-                        <p class="tags">#COFFEE #TAGS #HERE</p>
-                        <h3>Article Title</h3>
-                        <p class="info"> JULY 19 2025 | BY JULIANA JIMENO</p>
-                    </div>
-                </div>
-            </div>
-        </div>-->
         <div class="cardsec" id="about">
             <p class="subheading">A hub for all coffee lovers</p>
             <h1>Join the Community</h1>
