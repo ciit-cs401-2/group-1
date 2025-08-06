@@ -79,13 +79,13 @@
                     <div class="ulcon">
                         <ul class="ul-nav">
                             <li>
-                                <a class="li-a" href="#about">ABOUT</a>
+                                <a class="li-a" href="{{ route('explore') }}">EXPLORE</a>
                             </li>
                             <li>
-                                <a class="li-a" href="#">HOME</a>
+                                <a class="li-a" href="{{ route('home')}}">HOME</a>
                             </li>
                             <li>
-                                <a class="li-a" href="#">CONTACT</a>
+                                <a class="li-a" href="{{ route('newdashboard')}}">DASHBOARD</a>
                             </li>
                         </ul>
                     </div>
