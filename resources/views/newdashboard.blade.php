@@ -125,6 +125,7 @@
                                         {{ strtoupper($post->status) }} &nbsp;•&nbsp;
                                         {{ \Carbon\Carbon::parse($post->updated_at)->format('F j, Y') }}
                                     </p>
+                                    <p>Role: {{ $post->pivot->author_role }}</p>
                                 </div>
                             </div>
                             <div class="postActions">
@@ -238,51 +239,100 @@
                         imageView.style.backgroundRepeat = "no-repeat";
                     }
 
-                    dropArea.addEventListener("dragover", function(e) {
+                    dropArea.addEventListener("dragover", function (e) {
                         e.preventDefault();
                     });
-                    dropArea.addEventListener("drop", function(e) {
+                    dropArea.addEventListener("drop", function (e) {
                         e.preventDefault();
                         inputFile.files = e.dataTransfer.files;
                         uploadImage();
                     });
 
-                    const conts = document.getElementById('contributors');
-                    const inputc = document.getElementById('input-contributor');
-                    const hiddenContributors = document.querySelector('input[name="contributors"]');
+                    const conts = document.getElementById('contributors'); // UL element
+                    const inputc = document.getElementById('input-contributor'); // Input field
+                    const hiddenContributors = document.querySelector('input[name="contributors"]'); // Hidden input
 
-                    inputc.addEventListener('keydown', function(event) {
+                    // Add contributor when Enter is pressed
+                    inputc.addEventListener('keydown', function (event) {
                         if (event.key === 'Enter') {
                             event.preventDefault();
                             const contContent = inputc.value.trim();
-                            if (contContent !== '') {
-                                const cont = document.createElement('li');
-                                cont.textContent = contContent;
-                                cont.innerHTML += '<button class="delete-button"> x</button>';
-                                conts.appendChild(cont);
+                            const contributorId = parseInt(contContent, 10);
+
+                            // Validate: must be numeric, positive
+                            if (!contContent || isNaN(contributorId) || contributorId < 0) {
+                                alert("Please enter a valid positive integer contributor ID.");
                                 inputc.value = '';
-                                updateContributorsHidden();
+                                return;
                             }
+
+                            // Prevent duplicate entries
+                            const existingIds = Array.from(conts.querySelectorAll('li')).map(li => li.dataset.id);
+                            if (existingIds.includes(String(contributorId))) {
+                                alert("This contributor ID has already been added.");
+                                inputc.value = '';
+                                return;
+                            }
+
+                            // Backend check: does the user ID exist?
+                            fetch(`/api/check-user/${contributorId}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.exists) {
+                                        const cont = document.createElement('li');
+                                        cont.setAttribute('data-id', contributorId);
+                                        cont.textContent = contributorId;
+
+                                        const delBtn = document.createElement('button');
+                                        delBtn.textContent = ' x';
+                                        delBtn.classList.add('delete-button');
+                                        delBtn.addEventListener('click', () => {
+                                            cont.remove();
+                                            updateContributorsHidden();
+                                        });
+
+                                        cont.appendChild(delBtn);
+                                        conts.appendChild(cont);
+                                        updateContributorsHidden();
+                                    } else {
+                                        alert("This contributor ID does not exist.");
+                                    }
+                                    inputc.value = '';
+                                })
+                                .catch(error => {
+                                    console.error('Error checking contributor:', error);
+                                    alert("An error occurred while checking the contributor.");
+                                    inputc.value = '';
+                                });
                         }
                     });
 
-                    conts.addEventListener('click', function(event) {
+                    // Remove contributor
+                    conts.addEventListener('click', function (event) {
                         if (event.target.classList.contains('delete-button')) {
                             event.target.parentNode.remove();
                             updateContributorsHidden();
                         }
                     });
 
+                    // Update the hidden input with an array of contributor IDs
                     function updateContributorsHidden() {
-                        const names = Array.from(conts.querySelectorAll('li')).map(li => li.firstChild.textContent.trim());
-                        hiddenContributors.value = JSON.stringify(names);
+                        const contributorIds = Array.from(conts.querySelectorAll('li')).map(li => li.dataset.id);
+                        hiddenContributors.value = JSON.stringify(contributorIds);
+                        console.log('Contributors:', hiddenContributors.value); // Corrected debug log
                     }
+
+                    // Force update right before form submission
+                    const form = document.querySelector('form');
+                    form.addEventListener('submit', function () {
+                        updateContributorsHidden();
+                    });
 
                     const tagsUl = document.getElementById('tags');
                     const inputTag = document.getElementById('input-tag');
                     const hiddenTags = document.querySelector('input[name="tags"]');
 
-                    inputTag.addEventListener('keydown', function(event) {
+                    inputTag.addEventListener('keydown', function (event) {
                         if (event.key === 'Enter') {
                             event.preventDefault();
                             const tagContent = inputTag.value.trim();
@@ -297,7 +347,7 @@
                         }
                     });
 
-                    tagsUl.addEventListener('click', function(event) {
+                    tagsUl.addEventListener('click', function (event) {
                         if (event.target.classList.contains('delete-button')) {
                             event.target.parentNode.remove();
                             updateTagsHidden();
@@ -532,7 +582,6 @@
                         document.getElementById("confpopup2").style.display = "none";
                         document.getElementById("overlay").style.display = "none";
                     }
-
 
                     function closeChanges() {
                         document.getElementById("confpopup1").style.display = "none";

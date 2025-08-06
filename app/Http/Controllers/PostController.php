@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ class PostController extends Controller
     {
         Log::info('store method hit');
 
+        // Normalize JSON string inputs (for contributors and tags)
         $request->merge([
             'contributors' => is_string($request->input('contributors'))
                 ? json_decode($request->input('contributors'), true) ?? []
@@ -24,24 +26,28 @@ class PostController extends Controller
                 : $request->input('tags'),
         ]);
 
+        // Validate request inputs
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'contributors' => 'nullable|array',
             'tags' => 'nullable|array',
-            'image' => 'nullable|image|max:2048'
+            'image' => 'nullable|image|max:2048',
         ]);
 
         Log::info('Saving post...');
 
+        // Handle image upload
         $imageData = null;
         if ($request->hasFile('image')) {
             $imageData = file_get_contents($request->file('image')->getRealPath());
         }
 
+        // Determine status and publication date
         $status = $request->input('status', 'draft');
         $publishedDate = $status === 'published' ? now() : null;
 
+        // Create the post
         $post = Post::create([
             'title' => $request->input('title'),
             'content' => $request->input('content'),
@@ -50,25 +56,64 @@ class PostController extends Controller
             'published_date' => $publishedDate,
         ]);
 
-        Log::info('Post model after creation:', $post->toArray());
-
         if (!$post->exists) {
             Log::error('Post failed to save.');
-        } else {
-            Log::info('Post created with ID: ' . $post->id);
+            return redirect()->back()->with('error', 'Failed to create post.');
         }
 
-        $post->contributors()->attach(auth()->id(), ['author_role' => 'main-author']);
+        Log::info('Post created with ID: ' . $post->id);
 
-        foreach ($request->input('contributors') as $userId) {
-            $post->contributors()->attach($userId, ['author_role' => 'co-author']);
+        /**
+         * Handle Shared Authorship
+         */
+        $submittedContributorIds = $request->input('contributors', []);
+        $validContributorIds = [];
+        $invalidContributorIds = [];
+
+        foreach ($submittedContributorIds as $userId) {
+            if (User::where('id', $userId)->exists()) {
+                $validContributorIds[] = $userId;
+            } else {
+                $invalidContributorIds[] = $userId;
+            }
         }
 
+        // Force status to draft if any invalid contributor ID was found
+        if (!empty($invalidContributorIds)) {
+            $post->update([
+                'status' => 'draft',
+                'published_date' => null,
+            ]);
+            Log::warning('Invalid contributor IDs found: ', $invalidContributorIds);
+        }
+
+        Log::info('Raw contributors input:', $request->input('contributors'));
+        Log::info('Valid contributor IDs:', $validContributorIds);
+        Log::info('Current authenticated user ID: ' . auth()->id());
+
+        // Prepare the pivot sync array for main & co-authors
+        $authorData = [
+            auth()->id() => ['author_role' => 'main-author'],
+        ];
+
+        foreach ($validContributorIds as $userId) {
+            if ($userId != auth()->id()) {
+                $authorData[$userId] = ['author_role' => 'co-author'];
+            }
+        }
+
+        $post->contributors()->sync($authorData);
+        Log::info('Author data synced to pivot table:', $authorData);
+
+        /**
+         * Handle Tags
+         */
         $tagIds = [];
-        foreach ($request->input('tags') as $tagName) {
+        foreach ($request->input('tags', []) as $tagName) {
             $tag = Tag::firstOrCreate(['tag_name' => $tagName]);
             $tagIds[] = $tag->id;
         }
+
         $post->tags()->sync($tagIds);
 
         return redirect('/newdashboard')->with('success', 'Post created successfully!');

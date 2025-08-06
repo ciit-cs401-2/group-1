@@ -79,4 +79,7 @@ class User extends Authenticatable
                     ->withPivot('author_role');
     }
 
+    public function mainPosts() {
+        return $this->contributedPosts()->wherePivot('author_role', 'main-author');
+    }
 }
