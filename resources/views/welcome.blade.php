@@ -7,6 +7,12 @@
         <p>Not logged in</p>
     @endif (This is just for debugging, can confirm that you're logged in as whoever)--}}
 
+    @if (session('access_denied'))
+        <script>
+            plsLogin();
+        </script>
+    @endif
+
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
