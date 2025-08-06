@@ -25,6 +25,8 @@ class ArticleController extends Controller
             ->whereIn('status', ['published', 'archived'])
             ->findOrFail($id);
 
+        $post->content = trim($post->content);
+
         // Increment view count
         if ($post->analytics) {
             $post->analytics->increment('views');

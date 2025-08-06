@@ -24,7 +24,7 @@
         @if (session('access_denied'))
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
-                    plsLogin();
+                    plsLogin()
                 });
             </script>
         @endif
@@ -32,7 +32,7 @@
         <div id="plslogin">
             <h1>Please Log In</h1>
             <p>Please log in to access user dashboard</p>
-            <button class="incbutton" onclick="closeIncorrect()">OK</button>
+            <button class="incbutton" onclick="closePls()">OK</button>
         </div>
         <div id="incorrect">
             <h1>Incorrect Credentials</h1>
@@ -114,7 +114,14 @@
                         </ul>
                     </div>
                     <div class="containbutton">
-                        <button class="login" onclick="openFormLogIn()">Log In</button>
+                        @if(Auth::check())
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="login">Log Out</button>
+                            </form>
+                        @else
+                            <button class="login" onclick="openFormLogIn()">Log In</button>
+                        @endif
                     </div>
                 </div>
             </div>

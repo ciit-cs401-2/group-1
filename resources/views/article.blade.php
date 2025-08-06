@@ -96,10 +96,12 @@
             <p class = "content">{{ $post->content }}</p>
             <div class = "comments">
                 <h3>Comments</h3>
-                <form class="inputComment">
+                <form class="inputComment" action="{{route('comment.store')}}" method="POST">
+                    @csrf
+                    <input type="hidden" name="post_id" value="{{ $post->id }}">
                     <textarea class="commentBox" placeholder="Share your thoughts!" name="content" required></textarea>
                     <div class="buttonWrapper">
-                        <button type="button" class="commentButton">Enter</button>
+                        <button type="submit" class="commentButton">Enter</button>
                     </div>
                 </form>
 
@@ -111,7 +113,7 @@
                                     <img class="profileImage" src="{{asset('storage/images/defaultGuy.jpg')}}" alt="User">
                                 </div>
                                 <div class="otherContentContainer">
-                                    <p><span class="userHandle">{{$comment->user->name}}</span> posted</p>
+                                    <p><span class="userHandle">{{$comment->user->name}}</span></p>
                                     <p class="commentContent">
                                         {{$comment->content}}
                                     </p>

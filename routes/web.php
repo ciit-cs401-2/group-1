@@ -5,6 +5,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\UserController;
@@ -48,6 +49,8 @@ Route::get('/api/check-user/{id}', [UserController::class, 'checkUser']);
 Route::get('/article/{id}', [ArticleController::class, 'show'])->name('article.show');
 
 Route::get('/article/{id}', [PostController::class, 'show'])->name('article.show');
+
+Route::post('/create-comment', [CommentController::class, 'store'])->middleware('auth')->name('comment.store');
 
 Route::get('/explore', [ArticleController::class, 'explore'])->name('explore');
 
