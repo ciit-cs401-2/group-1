@@ -115,45 +115,54 @@
                             </select>
                         </div>
                     </div>
-                </form>
-                <div class="managePosts">
-                    @forelse ($posts as $post)
-                        <div class="post">
-                            <div class="postImgContainer">
-                                <img class="postImg" src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
-                            </div>
-                            <div class="postDetails">
-                                <div class="postTitleDate">
-                                    <p class="title">{{ $post->title }}</p>
-                                    <p class="date">
-                                        {{ strtoupper($post->status) }} &nbsp;•&nbsp;
-                                        {{ \Carbon\Carbon::parse($post->updated_at)->format('F j, Y') }}
-                                    </p>
-                                    <p>Role: {{ $post->pivot->author_role }}</p>
-                                </div>
-                            </div>
-                            <div class="postActions">
-                                <div class="postStatus">
-                                    <div class="displayedStatus border
-                                        @if($post->status === 'draft') text-yellow-900 border-yellow-900 bg-yellow-200
-                                        @elseif($post->status === 'published') text-green-900 border-green-900 bg-green-200
-                                        @elseif($post->status === 'archived') text-gray-900 border-gray-900 bg-gray-200
-                                        @endif">
-                                    {{ strtoupper($post->status) }}</div>
-                                    <div class="statusOptions">
-                                        <div data-value="draft" data-display="DRAFT">Set as Draft</div>
-                                        <div data-value="published" data-display="PUBLISHED">Publish</div>
-                                        <div data-value="archived" data-display="ARCHIVED">Archive</div>
-                                    </div>
-                                    <input type="hidden" name="status" value="{{ $post->status }}">
-                                </div>
-                                <a href="#"><img class="postIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
-                            </div>
-                        </div>
-                    @empty
-                        <p>No posts found.</p>
-                    @endforelse
+<div class="managePosts">
+    @forelse ($posts as $post)
+        @if ($post->status === 'published')
+            <a href="{{ route('posts.show', $post->id) }}" class="postLinkWrapper" style="text-decoration: none; color: inherit;">
+        @endif
+
+        <div class="post" style="{{ $post->status === 'published' ? 'cursor: pointer;' : '' }}">
+            <div class="postImgContainer">
+                <img class="postImg" src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
+            </div>
+            <div class="postDetails">
+                <div class="postTitleDate">
+                    <p class="title">{{ $post->title }}</p>
+                    <p class="date">
+                        {{ strtoupper($post->status) }} &nbsp;•&nbsp;
+                        {{ \Carbon\Carbon::parse($post->updated_at)->format('F j, Y') }}
+                    </p>
+                    <p>Role: {{ $post->pivot->author_role }}</p>
                 </div>
+            </div>
+            <div class="postActions">
+                <div class="postStatus">
+                    <div class="displayedStatus border
+                        @if($post->status === 'draft') text-yellow-900 border-yellow-900 bg-yellow-200
+                        @elseif($post->status === 'published') text-green-900 border-green-900 bg-green-200
+                        @elseif($post->status === 'archived') text-gray-900 border-gray-900 bg-gray-200
+                        @endif">
+                        {{ strtoupper($post->status) }}
+                    </div>
+                    <div class="statusOptions">
+                        <div data-value="draft" data-display="DRAFT">Set as Draft</div>
+                        <div data-value="published" data-display="PUBLISHED">Publish</div>
+                        <div data-value="archived" data-display="ARCHIVED">Archive</div>
+                    </div>
+                    <input type="hidden" name="status" value="{{ $post->status }}">
+                </div>
+                <a href="#"><img class="postIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
+            </div>
+        </div>
+
+        @if ($post->status === 'published')
+            </a>
+        @endif
+    @empty
+        <p>No posts found.</p>
+    @endforelse
+</div>
+
             </div>
 
             <!-- === CREATE POSTS === -->
@@ -355,22 +364,6 @@
                         <a href = "#">Back to Home</a>
                     </div>
                         <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; Drafts</p>
-                </div>
-                <div class = "manageSettings draftSettings">
-                    <div class = "sortOverlay">
-                        <label for = "sortOptions">Sort by: </label>
-                        <select id = "sortOptions">
-                            <option value="" selected disabled hidden></option>
-                            <option value = "title">Title</option>
-                            <option value = "date">Last Edited</option>
-                        </select>
-                        <label for = "sortOrder">Order: </label>
-                        <select id = "sortOrder">
-                            <option value="" selected disabled hidden></option>
-                            <option value = "ascending">Ascending</option>
-                            <option value = "descending">Descending</option>
-                        </select>
-                    </div>
                 </div>
 
                 <div class="draftPosts">
