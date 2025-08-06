@@ -134,10 +134,16 @@
                             </div>
                             <div class="postActions">
                                 <div class="postStatus">
-                                    <div class="displayedStatus border">{{ strtoupper($post->status) }}</div>
+                                    <div class="displayedStatus border
+                                        @if($post->status === 'draft') text-yellow-900 border-yellow-900 bg-yellow-200
+                                        @elseif($post->status === 'published') text-green-900 border-green-900 bg-green-200
+                                        @elseif($post->status === 'archived') text-gray-900 border-gray-900 bg-gray-200
+                                        @endif">
+                                    {{ strtoupper($post->status) }}</div>
                                     <div class="statusOptions">
-                                        <div data-value="visible" data-display="VISIBLE">Set as Visible</div>
-                                        <div data-value="archive" data-display="ARCHIVED">Move to Archive</div>
+                                        <div data-value="draft" data-display="DRAFT">Set as Draft</div>
+                                        <div data-value="published" data-display="PUBLISHED">Publish</div>
+                                        <div data-value="archived" data-display="ARCHIVED">Archive</div>
                                     </div>
                                     <input type="hidden" name="status" value="{{ $post->status }}">
                                 </div>
@@ -629,12 +635,13 @@
                 options.style.display = 'none';
 
                 // tailwind for dynamic styles
-                if (hiddenInput.value === 'visible') {
-                    display.classList.remove('text-gray-900', 'border-gray-900', 'bg-gray-200');
-                    display.classList.add('text-green-900', 'border-green-900', 'bg-green-200');
-                } else if (hiddenInput.value === 'archive') {
-                    display.classList.remove('text-green-900', 'border-green-900', 'bg-green-200');
-                    display.classList.add('text-gray-900', 'border-gray-900', 'bg-gray-200');
+
+                if (hiddenInput.value === 'draft') {
+                    display.className = 'displayedStatus border text-yellow-900 border-yellow-900 bg-yellow-200';
+                } else if (hiddenInput.value === 'published') {
+                    display.className = 'displayedStatus border text-green-900 border-green-900 bg-green-200';
+                } else if (hiddenInput.value === 'archived') {
+                    display.className = 'displayedStatus border text-gray-900 border-gray-900 bg-gray-200';
                 }
             });
         });

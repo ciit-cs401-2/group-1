@@ -143,6 +143,101 @@ p {
     text-align: justify;
 }
 
+.content {
+    margin-bottom: 3rem;
+}
+/*=== COMMENTS ===*/
+.comments {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    overflow: hidden;
+    gap: 0.5rem;
+}
+
+.inputComment {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem; 
+    width: 100%;
+}
+
+.commentBox {
+    width: 100%;
+    height: 13vh;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-family: 'Libre Franklin';
+    font-size: 1em;
+    resize: none;
+    flex-grow: 1;
+    margin-bottom: 0;
+}
+
+.btnWrapper {
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
+}
+
+.commentButton {
+    height: 3rem;
+    border-radius: 0.5rem;
+    background-color: #6F4E37;
+    color: white;
+    font-family: 'Libre Franklin';
+    font-size: 1em;
+    cursor: pointer;
+    border: none;
+    padding: 0 1rem;
+    white-space: nowrap;
+    width: 8vw;
+    align-self: flex-end;
+}
+
+
+
+.user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.userDetails {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.2;
+  
+
+}
+
+.commentAuthor {
+    font-family: 'Libre Franklin';
+    font-weight: 550;
+    font-size: 1.3em;
+    margin: 0;
+
+}
+.commentDate {
+    font-family: 'Libre Franklin';
+    font-size: 0.8em;
+    color: #787879 ;
+    margin: 0;
+}
+
+.commentContent {
+  margin-left: 4rem;
+  font-size: 1.3em;
+  text-align: justify;
+  word-break: break-word;
+}
 /*=== OTHER POSTS ===*/
 
 .other {
@@ -232,8 +327,17 @@ p {
     p, .details, .tags {
         font-size: 0.9em;
     }
+    .commentBox, .commentContent {
+        font-size: 0.9em;
+    }
+    .commentButton {
+        height: 2rem;
+        font-size: 0.9em;
+    }
+    .commentAuthor {
 
-
+        font-size: 1.1em;
+    }
     .article {
         margin-bottom: 4rem;
     }
@@ -254,6 +358,14 @@ p {
     .otherAuthor {
         font-size: 0.75em;
     }
+    .analytics {
+        flex-wrap: wrap;
+        gap:0.5rem;
+    }
+    .numbers {
+        font-size: 0.8em;
+    }
+
 }
 
 @media (max-width: 680px) {
@@ -276,5 +388,10 @@ p {
     }
     .otherContentContainer {
         margin-left: 0.85rem;
+    }
+    .commentButton {
+        width: 100%; 
+        align-self: stretch; 
+        text-align: center;
     }
 }
