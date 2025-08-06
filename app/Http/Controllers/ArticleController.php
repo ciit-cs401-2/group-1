@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Post;
 
 class ArticleController extends Controller
 {
@@ -19,5 +20,13 @@ class ArticleController extends Controller
     public function create()    //GET
     {
         return view('article.create');
+    }
+
+    public function show($id) {
+        $post = Post::with(['tags', 'contributors', 'analytics'])->findOrFail($id);
+
+        $otherPosts = Post::where('id', '!=', $id)->take(4)->get();
+        
+        return view('article', compact('post'));
     }
 }

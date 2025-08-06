@@ -47,65 +47,44 @@
     <!--========== ARTICLE IMAGE CONTAINER ==========-->
     <div class = "container">
         <div class = "article">
-            <h1>Flavors and Profiles of Coffee</h1>
+            <h1>{{ $post->title }}</h1>
             <div class = "details">
-                <p class = "author">by Dana Alania</p>
-                <p class = "date"> Last edited on July 10, 2025</p>
+                <p class = "author">
+                    by {{ $post->contributors->first()->name ?? 'Unknown' }}
+                </p>
+                <p class = "date">
+                    Last edited on {{ $post->updated_at->format('F j, Y') }}
+                </p>
             </div>
             <div class = "containerImg">
-                <img class = "postImg" src = "{{asset('storage/images/img.jpg')}}">
+                <img class="postImg" src="{{ route('posts.image', ['id' => $post->id]) }}" alt="Post Image">
             </div>
-            <p class = "tags">#Coffee #Flavors</p>
-            <p class = "content">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+            <div class="tags">
+                @foreach ($post->tags as $tag)
+                    <span class="tag">{{ $tag->tag_name }}</span>
+                @endforeach
+            </div>
+            <p class = "content">{{ $post->content }}</p>
         </div>
         <div class = "others">
             <h3>Other Posts</h3>
 
-            <div class = "other card1"> <!-- other contains img and content of a card -->
-                <div class = "otherImgContainer">
-                    <img class = "img1" src = "{{asset('storage/images/coffee5.jpg')}}">
+            @foreach ($otherPosts as $other)
+                <div class="other card">
+                    <div class="otherImgContainer">
+                        <img class="img1" src="{{ route('posts.image', ['id' => $other->id]) }}" alt="Post Image">
+                    </div>
+                    <div class="otherContentContainer">
+                        <a href="{{ route('article.show', $other->id) }}" class="otherTitle">
+                            {{ $other->title }}
+                        </a>
+                        <p class="otherAuthor">
+                            by {{ $other->contributors->first()->name ?? 'Unknown' }}
+                        </p>
+                    </div>
                 </div>
-                <div class = "otherContentContainer">
-                    <a href = "#" class = "otherTitle">Origin of Coffee</p>
-                    <p class = "otherAuthor">by Dana Alania</p>
-                </div>
-            </div>
-            <hr class = "line">
-            <div class = "other card2"> <!-- other contains img and content of a card -->
-                <div class = "otherImgContainer">
-                    <img class = "img1" src = "{{asset('storage/images/coffee4.jpg')}}">
-                </div>
-                <div class = "otherContentContainer">
-                    <a href = "#" class = "otherTitle">Kape Kape KAPE</p>
-                    <p class = "otherAuthor">by Dana Alania</p>
-                </div>
-            </div>
-            <hr class = "line">
-            <div class = "other card3"> <!-- other contains img and content of a card -->
-                <div class = "otherImgContainer">
-                    <img class = "img1" src = "{{asset('storage/images/coffee3.jpg')}}">
-                </div>
-                <div class = "otherContentContainer">
-                    <a href = "#" class = "otherTitle">Kape Kape KAPE</p>
-                    <p class = "otherAuthor">by Dana Alania</p>
-                </div>
-            </div>
-            <hr class = "line">
-            <div class = "other card4"> <!-- other contains img and content of a card -->
-                <div class = "otherImgContainer">
-                    <img class = "img1" src = "{{asset('storage/images/coffee2.jpg')}}">
-                </div>
-                <div class = "otherContentContainer">
-                    <a href = "#" class = "otherTitle">Why I Go to Starbucks Despite It Tasting Awful</p>
-                    <p class = "otherAuthor">by Dana Alania</p>
-                </div>
-            </div>
-            <hr class = "line">
+                <hr class="line">
+            @endforeach
         </div>
     </div>
 </body>

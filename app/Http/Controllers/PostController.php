@@ -133,4 +133,13 @@ class PostController extends Controller
 
         return response($post->image_data)->header('Content-Type', 'image/jpeg');
     }
+
+    public function show($id) {
+        $post = Post::with(['contributors', 'tags', 'analytics'])->findOrFail($id);
+
+        $otherPosts = Post::where('id', '!=', $id)->latest()->take(4)->get();
+
+        return view('article', compact('post', 'otherPosts'));
+    }
+
 }

@@ -117,8 +117,9 @@
     <div class="featuredsec">
         <h1>More Posts</h1>
         @foreach($posts->chunk(3) as $group)
-                <div class="card-container">
-                    @foreach($group as $post)
+            <div class="card-container">
+                @foreach($group as $post)
+                    <a href="{{ route('article.show', ['id' => $post->id]) }}" class="card-link">
                         <div class="card">
                             <div class="image-container">
                                 <img src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
@@ -141,8 +142,9 @@
                                 </p>
                             </div>
                         </div>
-                    @endforeach
-                </div>
+                    </a>
+                @endforeach
+            </div>
         @endforeach
     </div>
     <div class="footer">
