@@ -30,7 +30,7 @@
             <label for="password"><b>Password</b></label>
             <input type="password" placeholder="Enter password" name="password" required></input>
 
-            <button type="submit" class="button" onclick="incorrectCred()">Log In</button>
+            <button type="submit" class="button" onclick="">Log In</button>
             <button type="button" class="button cancel" onclick="closeFormLogIn()">Cancel</button>
             <p onclick="window.location='{{ url('register') }}'">Create an Account</p>
         </form>

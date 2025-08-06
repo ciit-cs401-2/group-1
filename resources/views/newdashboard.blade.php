@@ -14,6 +14,8 @@
 <body>
     <script>
 
+        
+
         // === DASHBOARD SWITCH CONTENT === //
         function changeContent(contentId, btnSelected) {
             // gonna leave comments for each block of code here kasi baka makalimutan ko how all these work
@@ -66,8 +68,11 @@
         <div id="logout">
             <h1>Log Out?</h1>
             <div class="button-group2">
-                <button class="button1" onclick="confLG()">Log Out</button>
-                <button class="button2"onclick="cancelLG()"">Cancel</button>
+                <form action="{{route('logout')}}" method="POST">
+                    @csrf
+                    <button class="button1" type="submit">Log Out</button>
+                </form>
+                <button class="button2"onclick="cancelLG()">Cancel</button>
             </div>
         </div>
         <div id="overlay"></div>
@@ -78,7 +83,8 @@
             }
 
             function confLG() {
-                alert("Logged out succesfully.")
+                document.getElementById('yourForm').action = "{{ route('logout') }}";
+                document.getElementById('yourForm').submit();
             }
             function cancelLG() {
                 document.getElementById("logout").style.display = "none";

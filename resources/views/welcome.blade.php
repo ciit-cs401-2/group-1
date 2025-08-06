@@ -123,7 +123,7 @@
                     </div>
                     <div class="containbutton">
                         @if(Auth::check())
-                            <form method="POST" action="{{ route('newdashboard') }}">
+                            <form method="GET" action="{{ route('newdashboard') }}">
                                 @csrf
                                 <button type="submit" class="login">Back to Dashboard</button>
                             </form>
