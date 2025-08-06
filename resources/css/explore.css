@@ -28,6 +28,7 @@
 }
 
 .leftcol > img {
+    min-height: inherit;
     width: 75%;
     margin-top: 5%;
     margin-left: auto;
@@ -129,7 +130,7 @@
 /* more posts */
 
 .featuredsec {
-    margin-top: 3%;
+    margin-top: 5%;
     margin-bottom: 3%;
     width: 100%;
     box-sizing: border-box;

@@ -90,11 +90,11 @@
 <div class="searchsec">
     <div class="search">
         <form action="{{ route('explore') }}" method="GET" style="display: flex; width: 100%;">
-            <input 
-                type="text" 
-                name="query" 
-                class="searchTerm" 
-                placeholder="Looking for a post?" 
+            <input
+                type="text"
+                name="query"
+                class="searchTerm"
+                placeholder="Looking for a post?"
                 value="{{ request('query') }}"
             >
             <button type="submit" class="searchButton">
