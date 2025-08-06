@@ -160,12 +160,13 @@
 
 .image-container {
     height: 300px;
+    width: 100%;
     overflow: hidden;
   }
 
-.card img {
+.card > .image-container > img {
     object-fit: cover;
-    min-height: auto;
+    min-height: 100%;
     width: 100%;
     user-select: none;
 }
@@ -195,6 +196,10 @@
 .card > .card-content > .info > img {
     max-height: 24px;
     max-width: 24px;
+    object-fit: cover;
+    min-height: 100%;
+    width: 100%;
+    user-select: none;
 }
 
 @media screen and (max-width: 720px) {
