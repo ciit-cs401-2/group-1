@@ -219,7 +219,7 @@ li {
     color: rgb(176, 176, 176);
 }
 
-#incorrect {
+#incorrect, #plslogin {
     height: 16vh;
     background-color: white;
     display: none;
