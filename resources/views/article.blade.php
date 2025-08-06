@@ -104,22 +104,25 @@
                 </form>
 
                 <div>
-                    <div class = "comment">
-                        <div class = "user">
-                            <img width="48" height="48" src="https://img.icons8.com/fluency-systems-filled/48/6f4e37/user-male-circle.png" alt="user-male-circle"/>
-                            <div class= "userDetails">
-                                <p class = "commentAuthor">Dana Alania</p>
-                                <p class = "commentDate">August 7, 2024</p>
-                            </div>
-                        </div>
-                        <p class = "commentContent">Wow, nice!</p>
-                        
-                    </div>
-                    
+                    <div class="commentCardContainer">
+                        @forelse ($post->comments as $comment)
+                            <div class = "commentCard">
+                                <div class="otherImgContainer">
+                                    <img class="profileImage" src="{{asset('storage/images/defaultGuy.jpg')}}" alt="User">
+                                </div>
+                                <div class="otherContentContainer">
+                                    <p><span class="userHandle">{{$comment->user->name}}</span> posted</p>
+                                    <p class="commentContent">
+                                        {{$comment->content}}
+                                    </p>
+                                    <p class ="details"> Last edited on {{ $comment->updated_at->format('F j, Y') }}</p>
+                                </div>
+                            </div>    
+                        @empty
+                            <h3>No comments</h3>
+                        @endforelse
+                    </div>      
                 </div>
-                
-
-
             </div>
         </div>
         <div class = "others">
@@ -140,40 +143,6 @@
                 </div>
                 <hr class="line">
             @endforeach
-        </div>
-    </div>
-    <div class="commentFormContainer">
-        <h3>Leave a Comment</h3>
-        <form action="{{ route('comments.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="post_id" value="{{ $post->id }}">
-            
-            <div class="formGroup">
-                <label for="content">Your Comment:</label>
-                <textarea id="content" name="content" rows="4" required></textarea>
-            </div>
-
-            <button type="submit" class="submitButton">Post Comment</button>
-        </form>
-    </div>
-    <div class="commentsSectionContainer">
-        <div class="commentCardContainer">
-            @forelse ($post->comments as $comment)
-                <div class = "commentCard">
-                    <div class="otherImgContainer">
-                        <img class="profileImage" src="{{asset('storage/images/defaultGuy.jpg')}}" alt="User">
-                    </div>
-                    <div class="otherContentContainer">
-                        <p><span class="userHandle">{{$comment->user->name}}</span> posted</p>
-                        <p class="commentContent">
-                            {{$comment->content}}
-                        </p>
-                        <p class ="details"> Last edited on {{ $comment->updated_at->format('F j, Y') }}</p>
-                    </div>
-                </div>    
-            @empty
-                <h3>No comments</h3>
-            @endforelse
         </div>
     </div>
     <div class="footer">
