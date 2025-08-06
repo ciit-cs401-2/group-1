@@ -138,6 +138,18 @@ class PostController extends Controller
     public function show($id) {
         $post = Post::with(['contributors', 'tags', 'analytics'])->findOrFail($id);
 
+        // Increment view count using the existing analytics relation
+        if ($post->analytics) {
+            $post->analytics->increment('views');
+        } else {
+            // If there's no analytics record yet, create one
+            $post->analytics()->create([
+                'views' => 1,
+                'likes' => 0,
+                'comments' => 0
+            ]);
+        }
+
         $otherPosts = Post::where('id', '!=', $id)->latest()->take(4)->get();
 
         return view('article', compact('post', 'otherPosts'));

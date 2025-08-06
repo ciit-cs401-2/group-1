@@ -87,17 +87,28 @@
             </div>
         </div>
     </div>
-    <div class="searchsec">
-        <div class="search">
-            <input type="text" class="searchTerm" placeholder="Looking for a post?">
+<div class="searchsec">
+    <div class="search">
+        <form action="{{ route('explore') }}" method="GET" style="display: flex; width: 100%;">
+            <input
+                type="text"
+                name="query"
+                class="searchTerm"
+                placeholder="Looking for a post?"
+                value="{{ request('query') }}"
+            >
             <button type="submit" class="searchButton">
                 <i class="fa fa-search"></i>
             </button>
-        </div>
+        </form>
     </div>
+</div>
+
     <div class="main">
         <div class="leftcol">
-            <img src="{{ $featured_post->image_data ? route('posts.image', $featured_post->id) : asset('/storage/images/pexels-chevanon-302901.jpg')}}">
+            <div class="image-container">
+                <img src="{{ $featured_post->image_data ? route('posts.image', $featured_post->id) : asset('/storage/images/pexels-chevanon-302901.jpg')}}">
+            </div>
         </div>
         <div class="rightcol">
             <p class="tags">

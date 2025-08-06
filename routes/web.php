@@ -43,3 +43,5 @@ Route::get('/api/check-user/{id}', [UserController::class, 'checkUser']);
 Route::get('/article/{id}', [ArticleController::class, 'show'])->name('article.show');
 
 Route::get('/article/{id}', [PostController::class, 'show'])->name('article.show');
+
+Route::get('/explore', [ArticleController::class, 'explore'])->name('explore');
