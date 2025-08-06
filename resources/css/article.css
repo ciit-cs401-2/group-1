@@ -205,6 +205,66 @@ p {
     border: none;
 }
 
+/* === Commments === */
+
+.commentsSectionContainer
+{
+    padding: 0px 20px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    overflow: visible;
+    margin-left:10rem;
+    margin-bottom: 9rem;
+}
+
+#commentHeader
+{
+    margin-left: 0.2rem;
+}
+
+#commentCardContainer
+{
+    display: flex;
+    flex-direction: column;
+    margin-left:2rem;
+}
+
+.commentCard
+{
+    margin-left: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.profileImageContainer
+{
+    height: 13vh;
+    width: 6vw;
+    flex-shrink: 0;
+    overflow: hidden;
+    /* to center postImg inside containerImg */
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+.profileImage
+{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.userHandle
+{
+    font-family: 'Libre Baskerville';
+    font-weight: bolder;
+    font-size: 1.75em;
+}
+.commentSection
+
+
 @media (max-width: 1240px) {
     .otherImgContainer {
         display: none;

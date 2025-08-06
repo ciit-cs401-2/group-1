@@ -7,10 +7,8 @@ use App\Models\Post;
 
 class ArticleController extends Controller
 {
-        public function index() //GET
+    public function index() //GET
     {
-
-
         return view('article');
     }
 
@@ -23,8 +21,7 @@ class ArticleController extends Controller
     }
 
     public function show($id) {
-        $post = Post::with(['tags', 'contributors', 'analytics'])->findOrFail($id);
-
+        $post = Post::with(['tags', 'contributors', 'analytics', 'comments'])->findOrFail($id);
         $otherPosts = Post::where('id', '!=', $id)->take(4)->get();
 
         return view('article', compact('post'));

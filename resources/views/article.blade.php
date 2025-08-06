@@ -64,16 +64,16 @@
                     <div class = "numbers">
                         <img id="likeIcon" width="24" height="24" src="https://img.icons8.com/fluency-systems-regular/24/6f4e37/facebook-like.png"  alt="facebook-like" class="w-6 h-6 cursor-pointer transition-all duration-200"/>
 
-                        <p>123</p>
+                        <p> {{$post->analytics['likes']}}</p>
                     </div>
                     <div class = "numbers">
                         <img width="24" height="24" src="https://img.icons8.com/material-sharp/100/6f4e37/speech-bubble--v1.png" alt="speech-bubble--v1"/>
-                        <p>122342343</p>
+                        <p>{{$post->analytics['comments']}}</p>
                     </div>
                     <div class = "numbers">
                         <img width="24" height="24" src="https://img.icons8.com/external-solid-style-bomsymbols-/24/6f4e37/external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-.png" alt="external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-"/>
                 
-                        <p>122342343</p>
+                        <p>{{$post->analytics['views']}}</p>
                     </div>
                     <script>
                         const likeIcon = document.getElementById('likeIcon');
@@ -97,7 +97,6 @@
         </div>
         <div class = "others">
             <h3>Other Posts</h3>
-
             @foreach ($otherPosts as $other)
                 <div class="other card">
                     <div class="otherImgContainer">
@@ -114,6 +113,40 @@
                 </div>
                 <hr class="line">
             @endforeach
+        </div>
+    </div>
+    <div class="commentFormContainer">
+        <h3>Leave a Comment</h3>
+        <form action="{{ route('comments.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="post_id" value="{{ $post->id }}">
+            
+            <div class="formGroup">
+                <label for="content">Your Comment:</label>
+                <textarea id="content" name="content" rows="4" required></textarea>
+            </div>
+
+            <button type="submit" class="submitButton">Post Comment</button>
+        </form>
+    </div>
+    <div class="commentsSectionContainer">
+        <div class="commentCardContainer">
+            @forelse ($post->comments as $comment)
+                <div class = "commentCard">
+                    <div class="otherImgContainer">
+                        <img class="profileImage" src="{{asset('storage/images/defaultGuy.jpg')}}" alt="User">
+                    </div>
+                    <div class="otherContentContainer">
+                        <p><span class="userHandle">{{$comment->user->name}}</span> posted</p>
+                        <p class="commentContent">
+                            {{$comment->content}}
+                        </p>
+                        <p class ="details"> Last edited on {{ $comment->updated_at->format('F j, Y') }}</p>
+                    </div>
+                </div>    
+            @empty
+                <h3>No comments</h3>
+            @endforelse
         </div>
     </div>
 </body>
