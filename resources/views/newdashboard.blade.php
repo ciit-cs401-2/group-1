@@ -96,22 +96,26 @@
                     </div>
                         <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; Manage Posts</p>
                 </div>
-                <div class = "manageSettings">
-                    <div class = "sortOverlay">
-                        <label for = "sortOptions">Sort by: </label>
-                        <select id = "sortOptions">
-                            <option value="" selected disabled hidden></option>
-                            <option value = "title">Title</option>
-                            <option value = "date">Last Edited</option>
-                        </select>
-                        <label for = "sortOrder">Order: </label>
-                        <select id = "sortOrder">
-                            <option value="" selected disabled hidden></option>
-                            <option value = "ascending">Ascending</option>
-                            <option value = "descending">Descending</option>
-                        </select>
-                    </div>
-                </div>
+<form method="GET" action="{{ route('dashboard.sort') }}">
+    <div class="manageSettings draftSettings">
+        <div class="sortOverlay">
+            <label for="sortOptions">Sort by:</label>
+            <select name="sortOptions" id="sortOptions" onchange="this.form.submit()">
+                <option value="" disabled {{ !$sortFieldInput ? 'selected' : '' }} hidden></option>
+                <option value="title" {{ $sortFieldInput == 'title' ? 'selected' : '' }}>Title</option>
+                <option value="date" {{ $sortFieldInput == 'date' ? 'selected' : '' }}>Last Edited</option>
+                <option value="published_date" {{ $sortFieldInput == 'published_date' ? 'selected' : '' }}>Published Date</option>
+            </select>
+
+            <label for="sortOrder">Order:</label>
+            <select name="sortOrder" id="sortOrder" onchange="this.form.submit()">
+                <option value="" disabled {{ !$sortOrder ? 'selected' : '' }} hidden></option>
+                <option value="asc" {{ $sortOrder == 'asc' ? 'selected' : '' }}>Ascending</option>
+                <option value="desc" {{ $sortOrder == 'desc' ? 'selected' : '' }}>Descending</option>
+            </select>
+        </div>
+    </div>
+</form>
                 <div class="managePosts">
                     @forelse ($posts as $post)
                         <div class="post">
@@ -144,30 +148,6 @@
                         <p>No posts found.</p>
                     @endforelse
                 </div>
-                <!--<div class = "managePosts">
-                    <div class = "post">
-                        <div class = "postImgContainer">
-                            <img class = "postImg" src = "{{asset('storage/images/coffee2.jpg')}}">
-                        </div>
-                        <div class = "postDetails">
-                            <div class = "postTitleDate">
-                                <p class = "title">Why Starbucks Is Overrated And Sells Awful Drinks Yet I Still Buy From Them</p>
-                                <p class = "date">PUBLISHED &nbsp;• &nbsp;JULY 19, 2025</p>
-                            </div>
-                        </div>
-                        <div class = "postActions">
-                            <div class="postStatus">
-                                <div class="displayedStatus border">VISIBLE</div> /hardcoded. replace this code to the current status of post according to database
-                                <div class="statusOptions">
-                                    <div data-value="visible" data-display="VISIBLE">Set as Visible</div>
-                                    <div data-value="archive" data-display="ARCHIVED">Move to Archive</div>
-                                </div>
-                                <input type="hidden" name="status" value="visible"> /"value = "visible"" to be replaced by dun sa nakalagay sa currentStatus. this is the actual value sent to database
-                                </div>
-                            <a href = "#"><img class = "postIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
-                        </div>
-                    </div>
-                </div>-->
             </div>
 
             <!-- === CREATE POSTS === -->

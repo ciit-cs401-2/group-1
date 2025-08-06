@@ -45,3 +45,5 @@ Route::get('/article/{id}', [ArticleController::class, 'show'])->name('article.s
 Route::get('/article/{id}', [PostController::class, 'show'])->name('article.show');
 
 Route::get('/explore', [ArticleController::class, 'explore'])->name('explore');
+
+Route::get('/newdashboard/sort', [DashboardController::class, 'sortPosts'])->middleware('auth')->name('dashboard.sort');
