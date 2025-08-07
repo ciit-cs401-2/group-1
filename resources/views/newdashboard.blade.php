@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Dashboard</title>
     <link rel="icon" href="\storage\images\icons8-coffee-beans-100.png">
     @vite('resources/css/newdashboard.css')
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,7 +44,7 @@
         <div class = "sidebar">
 
             <div>
-                <a class = "logo" href = "#"><img height = 50px width=50px src = "{{asset('storage/images/icons8-coffee-beans-100.png')}}"><h2>Blog</h2></a>
+                <a class = "logo" href = "{{route('home')}}"><img height = 50px width=50px src = "{{asset('storage/images/icons8-coffee-beans-100.png')}}"><h2>Coffee &<br>Contemplation</h2></a>
                 <h2>Dashboard</h2>
                 <ul class = "dashboardOptions">
                     <li><a class = "icon active" href = "#" onclick = "changeContent('manage', this)"><img class = "manageIcon" width="24" height="24" src="https://img.icons8.com/material/24/6f4e37/dashboard-layout.png" alt="dashboard-layout"/><p>Manage Posts</p></a></li>
@@ -157,9 +157,9 @@
                                     @endif">
                                     {{ strtoupper($post->status) }}</div>
                                     <div class="statusOptions">
-                                        <div data-value="draft" data-display="DRAFT">DRAFT</div>
-                                        <div data-value="published" data-display="PUBISHED">PUBLISHED</div>
-                                        <div data-value="archived" data-display="ARCHIVED">ARCHIVED</div>
+                                        <div data-value="draft" data-display="DRAFT">Set as Draft</div>
+                                        <div data-value="published" data-display="PUBISHED">Publish Post</div>
+                                        <div data-value="archived" data-display="ARCHIVED">Keep to Archives</div>
                                     </div>
                                     <input type="hidden" name="status" value="{{ $post->status }}">
                                 </div>
@@ -682,11 +682,11 @@
 
                 // tailwind for dynamic styles
                 if (hiddenInput.value === 'draft') {
-                    display.className = 'displaydStatusborder text-yellow-900, border-yellow-900, bg-yellow-200';
+                    display.className = 'displayedStatus border text-yellow-900, border-yellow-900, bg-yellow-200';
                 } else if (hiddenInput.value === 'published') {
-                    display.className = 'displaydStatusborder text-green-900, border-green-900, bg-green-200';
+                    display.className = 'displayedStatus border text-green-900, border-green-900, bg-green-200';
                 } else if (hiddenInput.value === 'archived') {
-                    display.className = 'displaydStatusborder text-gray-900, border-gray-900, bg-gray-200';
+                    display.className = 'displayedStatus border text-gray-900, border-gray-900, bg-gray-200';
                 }
             });
         });

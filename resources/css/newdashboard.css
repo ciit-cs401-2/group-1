@@ -139,6 +139,7 @@ li {
 
 .logo h2 {
     margin: 0;
+    line-height: 1;
 }
 
 hr {
@@ -367,6 +368,7 @@ hr {
     font-family: 'Libre Franklin';
     font-size: 0.8em;
     transition: all 0.8s ease;
+    width: 5vw;
   }
   .statusOptions {
     display: none;
