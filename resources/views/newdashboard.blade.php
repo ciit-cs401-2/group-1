@@ -23,7 +23,6 @@
                 div.classList.add('hidden'); // adds tailwind hidden to class name of selected divs
             });
 
-
             // unhide the selected div
             const currentContent = document.getElementById(contentId);
             if (currentContent) {
@@ -96,22 +95,7 @@
                     </div>
                         <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; Manage Posts</p>
                 </div>
-                <!--<div class = "manageSettings">
-                    <div class = "sortOverlay">
-                        <label for = "sortOptions">Sort by: </label>
-                        <select id = "sortOptions">
-                            <option value="" selected disabled hidden></option>
-                            <option value = "title">Title</option>
-                            <option value = "date">Last Edited</option>
-                        </select>
-                        <label for = "sortOrder">Order: </label>
-                        <select id = "sortOrder">
-                            <option value="" selected disabled hidden></option>
-                            <option value = "ascending">Ascending</option>
-                            <option value = "descending">Descending</option>
-                        </select>
-                    </div>
-                </div>-->
+
                 <form method="GET" action="{{ route('dashboard.sort') }}">
                     <div class="manageSettings draftSettings">
                         <div class="sortOverlay">
@@ -158,7 +142,7 @@
                                     {{ strtoupper($post->status) }}</div>
                                     <div class="statusOptions">
                                         <div data-value="draft" data-display="DRAFT">Set as Draft</div>
-                                        <div data-value="published" data-display="PUBISHED">Publish Post</div>
+                                        <div data-value="published" data-display="PUBLISHED">Publish Post</div>
                                         <div data-value="archived" data-display="ARCHIVED">Keep to Archives</div>
                                     </div>
                                     <input type="hidden" name="status" value="{{ $post->status }}">
@@ -176,30 +160,6 @@
                         <p>No posts found.</p>
                     @endforelse
                 </div>
-                <!--<div class = "managePosts">
-                    <div class = "post">
-                        <div class = "postImgContainer">
-                            <img class = "postImg" src = "{{asset('storage/images/coffee2.jpg')}}">
-                        </div>
-                        <div class = "postDetails">
-                            <div class = "postTitleDate">
-                                <p class = "title">Why Starbucks Is Overrated And Sells Awful Drinks Yet I Still Buy From Them</p>
-                                <p class = "date">PUBLISHED &nbsp;• &nbsp;JULY 19, 2025</p>
-                            </div>
-                        </div>
-                        <div class = "postActions">
-                            <div class="postStatus">
-                                <div class="displayedStatus border">VISIBLE</div> /hardcoded. replace this code to the current status of post according to database
-                                <div class="statusOptions">
-                                    <div data-value="visible" data-display="VISIBLE">Set as Visible</div>
-                                    <div data-value="archive" data-display="ARCHIVED">Move to Archive</div>
-                                </div>
-                                <input type="hidden" name="status" value="visible"> /"value = "visible"" to be replaced by dun sa nakalagay sa currentStatus. this is the actual value sent to database
-                                </div>
-                            <a href = "#"><img class = "postIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
-                        </div>
-                    </div>
-                </div>-->
             </div>
 
             <!-- === CREATE POSTS === -->
@@ -252,145 +212,6 @@
                         </div>
                     </div>
                 </form>
-
-                {{-- JS Section --}}
-                <script>
-                    const dropArea = document.getElementById("drop-area");
-                    const inputFile = document.getElementById("input-file");
-                    const imageView = document.getElementById("img-view");
-
-                    inputFile.addEventListener("change", uploadImage);
-
-                    function uploadImage() {
-                        let imgLink = URL.createObjectURL(inputFile.files[0]);
-                        imageView.style.backgroundImage = `url(${imgLink})`;
-                        imageView.textContent = " ";
-                        imageView.style.border = "none";
-                        imageView.style.backgroundSize = "cover";
-                        imageView.style.backgroundPosition = "center";
-                        imageView.style.backgroundRepeat = "no-repeat";
-                    }
-
-                    dropArea.addEventListener("dragover", function (e) {
-                        e.preventDefault();
-                    });
-                    dropArea.addEventListener("drop", function (e) {
-                        e.preventDefault();
-                        inputFile.files = e.dataTransfer.files;
-                        uploadImage();
-                    });
-
-                    const conts = document.getElementById('contributors'); // UL element
-                    const inputc = document.getElementById('input-contributor'); // Input field
-                    const hiddenContributors = document.querySelector('input[name="contributors"]'); // Hidden input
-
-                    // Add contributor when Enter is pressed
-                    inputc.addEventListener('keydown', function (event) {
-                        if (event.key === 'Enter') {
-                            event.preventDefault();
-                            const contContent = inputc.value.trim();
-                            const contributorId = parseInt(contContent, 10);
-
-                            // Validate: must be numeric, positive
-                            if (!contContent || isNaN(contributorId) || contributorId < 0) {
-                                alert("Please enter a valid positive integer contributor ID.");
-                                inputc.value = '';
-                                return;
-                            }
-
-                            // Prevent duplicate entries
-                            const existingIds = Array.from(conts.querySelectorAll('li')).map(li => li.dataset.id);
-                            if (existingIds.includes(String(contributorId))) {
-                                alert("This contributor ID has already been added.");
-                                inputc.value = '';
-                                return;
-                            }
-
-                            // Backend check: does the user ID exist?
-                            fetch(`/api/check-user/${contributorId}`)
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.exists) {
-                                        const cont = document.createElement('li');
-                                        cont.setAttribute('data-id', contributorId);
-                                        cont.textContent = contributorId;
-
-                                        const delBtn = document.createElement('button');
-                                        delBtn.textContent = ' x';
-                                        delBtn.classList.add('delete-button');
-                                        delBtn.addEventListener('click', () => {
-                                            cont.remove();
-                                            updateContributorsHidden();
-                                        });
-
-                                        cont.appendChild(delBtn);
-                                        conts.appendChild(cont);
-                                        updateContributorsHidden();
-                                    } else {
-                                        alert("This contributor ID does not exist.");
-                                    }
-                                    inputc.value = '';
-                                })
-                                .catch(error => {
-                                    console.error('Error checking contributor:', error);
-                                    alert("An error occurred while checking the contributor.");
-                                    inputc.value = '';
-                                });
-                        }
-                    });
-
-                    // Remove contributor
-                    conts.addEventListener('click', function (event) {
-                        if (event.target.classList.contains('delete-button')) {
-                            event.target.parentNode.remove();
-                            updateContributorsHidden();
-                        }
-                    });
-
-                    // Update the hidden input with an array of contributor IDs
-                    function updateContributorsHidden() {
-                        const contributorIds = Array.from(conts.querySelectorAll('li')).map(li => li.dataset.id);
-                        hiddenContributors.value = JSON.stringify(contributorIds);
-                        console.log('Contributors:', hiddenContributors.value); // Corrected debug log
-                    }
-
-                    // Force update right before form submission
-                    const form = document.querySelector('form');
-                    form.addEventListener('submit', function () {
-                        updateContributorsHidden();
-                    });
-
-                    const tagsUl = document.getElementById('tags');
-                    const inputTag = document.getElementById('input-tag');
-                    const hiddenTags = document.querySelector('input[name="tags"]');
-
-                    inputTag.addEventListener('keydown', function (event) {
-                        if (event.key === 'Enter') {
-                            event.preventDefault();
-                            const tagContent = inputTag.value.trim();
-                            if (tagContent !== '') {
-                                const tag = document.createElement('li');
-                                tag.textContent = tagContent;
-                                tag.innerHTML += '<button class="delete-button"> x</button>';
-                                tagsUl.appendChild(tag);
-                                inputTag.value = '';
-                                updateTagsHidden();
-                            }
-                        }
-                    });
-
-                    tagsUl.addEventListener('click', function (event) {
-                        if (event.target.classList.contains('delete-button')) {
-                            event.target.parentNode.remove();
-                            updateTagsHidden();
-                        }
-                    });
-
-                    function updateTagsHidden() {
-                        const tags = Array.from(tagsUl.querySelectorAll('li')).map(li => li.firstChild.textContent.trim());
-                        hiddenTags.value = JSON.stringify(tags);
-                    }
-                </script>
             </div>
 
             <!--- === DRAFTS === --->
@@ -451,28 +272,6 @@
                         <p>No posts found.</p>
                     @endforelse
                 </div>
-
-
-{{-- 
-                <div class = "draftPosts">
-                    <div class = "draft">
-                        <div class = "draftImgContainer">
-                            <img class = "draftImg" src = "{{asset('storage/images/coffee2.jpg')}}">
-                        </div>
-                        <div class = "draftDetails">
-                            <div class = "draftTitleDate">
-                                <p class = "draftTitle">draftttt</p>
-                                <p class = "draftDate">PUBLISHED &nbsp;• &nbsp;JULY 19, 2025</p>
-                            </div>
-                        </div>
-                        <div class = "draftActions">
-                            <a href = "#"><img class = "draftIcons" width="24" height="24" src="https://img.icons8.com/material-rounded/24/FAB005/edit.png" alt="edit"/></a>
-                            <a href = "#"><img class = "draftIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
-                        </div>
-                    </div>
-                </div> 
---}}
-
             </div>
 
             <!--- === ANALYTICS === --->
@@ -698,8 +497,7 @@
         }
         });
     });
-
-
     </script>
 </body>
+    <script src="js/newdashboard.js" defer></script>
 </html>
