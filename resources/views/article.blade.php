@@ -89,7 +89,7 @@
                 </div>
                 <div class="tags">
                     @foreach ($post->tags as $tag)
-                        <span class="tag">{{ $tag->tag_name }}</span>
+                        <span class="tag">#{{ $tag->tag_name }} &nbsp;</span>
                     @endforeach
                 </div>
             </div>
