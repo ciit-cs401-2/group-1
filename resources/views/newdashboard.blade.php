@@ -113,25 +113,25 @@
                     </div>
                 </div>-->
                 <form method="GET" action="{{ route('dashboard.sort') }}">
-    <div class="manageSettings draftSettings">
-        <div class="sortOverlay">
-            <label for="sortOptions">Sort by:</label>
-            <select name="sortOptions" id="sortOptions" onchange="this.form.submit()">
-                <option value="" disabled {{ !$sortFieldInput ? 'selected' : '' }} hidden></option>
-                <option value="title" {{ $sortFieldInput == 'title' ? 'selected' : '' }}>Title</option>
-                <option value="date" {{ $sortFieldInput == 'date' ? 'selected' : '' }}>Last Edited</option>
-                <option value="published_date" {{ $sortFieldInput == 'published_date' ? 'selected' : '' }}>Published Date</option>
-            </select>
+                    <div class="manageSettings draftSettings">
+                        <div class="sortOverlay">
+                            <label for="sortOptions">Sort by:</label>
+                            <select name="sortOptions" id="sortOptions" onchange="this.form.submit()">
+                                <option value="" disabled {{ !$sortFieldInput ? 'selected' : '' }} hidden></option>
+                                <option value="title" {{ $sortFieldInput == 'title' ? 'selected' : '' }}>Title</option>
+                                <option value="date" {{ $sortFieldInput == 'date' ? 'selected' : '' }}>Last Edited</option>
+                                <option value="published_date" {{ $sortFieldInput == 'published_date' ? 'selected' : '' }}>Published Date</option>
+                            </select>
 
-            <label for="sortOrder">Order:</label>
-            <select name="sortOrder" id="sortOrder" onchange="this.form.submit()">
-                <option value="" disabled {{ !$sortOrder ? 'selected' : '' }} hidden></option>
-                <option value="asc" {{ $sortOrder == 'asc' ? 'selected' : '' }}>Ascending</option>
-                <option value="desc" {{ $sortOrder == 'desc' ? 'selected' : '' }}>Descending</option>
-            </select>
-        </div>
-    </div>
-</form>
+                            <label for="sortOrder">Order:</label>
+                            <select name="sortOrder" id="sortOrder" onchange="this.form.submit()">
+                                <option value="" disabled {{ !$sortOrder ? 'selected' : '' }} hidden></option>
+                                <option value="asc" {{ $sortOrder == 'asc' ? 'selected' : '' }}>Ascending</option>
+                                <option value="desc" {{ $sortOrder == 'desc' ? 'selected' : '' }}>Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
                 <div class="managePosts">
                     @forelse ($posts as $post)
                         <div class="post">
@@ -163,7 +163,13 @@
                                     </div>
                                     <input type="hidden" name="status" value="{{ $post->status }}">
                                 </div>
-                                <a href="#"><img class="postIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
+                                <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
+                                        <img class="postIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     @empty
