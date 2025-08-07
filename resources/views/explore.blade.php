@@ -103,8 +103,9 @@
         </form>
     </div>
 </div>
+    <div class="main">
+        @if ($posts->isEmpty()) <div class="rightcol"><h1>No posts found</h1></div> @endif
         @if ($featured_post)
-        <div class="main">
             <div class="leftcol">
                 <div class="image-container">
                     <img src="{{ $featured_post->image_data ? route('posts.image', $featured_post->id) : asset('/storage/images/pexels-chevanon-302901.jpg')}}">
@@ -128,45 +129,41 @@
             </div>
         @endif
     </div>
-    @if ($posts->isEmpty())
-        <div class="rightcol">
-            <h2>No Post Found.</h2>
-        </div>
-        @else
-        <div class="featuredsec">
-            <h1>More Posts</h1>
-            @foreach($posts->chunk(3) as $group)
-                <div class="card-container">
-                    @foreach($group as $post)
-                        <a href="{{ route('article.show', ['id' => $post->id]) }}" class="card-link">
-                            <div class="card">
-                                <div class="image-container">
-                                    <img src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
-                                </div>
-                                <div class="card-content">
-                                    <p class="tags">
-                                        @foreach($post->tags as $tag)
-                                            #{{ strtoupper($tag->tag_name) }}
-                                        @endforeach
-                                    </p>
-                                    <h3>{{ $post->title }}</h3>
-                                    <p class="info">
-                                        {{ strtoupper(optional($post->published_date)->format('F d Y')) }} |
-                                        BY {{ strtoupper($post->contributors->first()->name ?? 'UNKNOWN') }}
-                                    </p>
-                                    <p class="info">
-                                        <img width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/6f4e37/facebook-like.png" alt="facebook-like"/> {{ strtoupper($post->analytics->likes ?? 0) }} |
-                                        <img width="12" height="12" src="https://img.icons8.com/material-sharp/100/6f4e37/speech-bubble--v1.png" alt="speech-bubble--v1"/> {{ strtoupper($post->analytics->comments ?? 0) }} |
-                                        <img width="24" height="24" src="https://img.icons8.com/external-solid-style-bomsymbols-/24/6f4e37/external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-.png" alt="external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-"/> {{ strtoupper($post->analytics->views ?? 0) }} |
-                                    </p>
-                                </div>
+    <div class="featuredsec">
+    @if ($posts->isNotEmpty())
+        <h1>More Posts</h1>
+        @foreach($posts->chunk(3) as $group)
+            <div class="card-container">
+                @foreach($group as $post)
+                    <a href="{{ route('article.show', ['id' => $post->id]) }}" class="card-link">
+                        <div class="card">
+                            <div class="image-container">
+                                <img src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
                             </div>
-                        </a>
-                    @endforeach
-                </div>
-            @endforeach
-            @endif
-        </div>
+                            <div class="card-content">
+                                <p class="tags">
+                                    @foreach($post->tags as $tag)
+                                        #{{ strtoupper($tag->tag_name) }}
+                                    @endforeach
+                                </p>
+                                <h3>{{ $post->title }}</h3>
+                                <p class="info">
+                                    {{ strtoupper(optional($post->published_date)->format('F d Y')) }} |
+                                    BY {{ strtoupper($post->contributors->first()->name ?? 'UNKNOWN') }}
+                                </p>
+                                <p class="info">
+                                    <img width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/6f4e37/facebook-like.png" alt="facebook-like"/> {{ strtoupper($post->analytics->likes ?? 0) }} |
+                                    <img width="12" height="12" src="https://img.icons8.com/material-sharp/100/6f4e37/speech-bubble--v1.png" alt="speech-bubble--v1"/> {{ strtoupper($post->analytics->comments ?? 0) }} |
+                                    <img width="24" height="24" src="https://img.icons8.com/external-solid-style-bomsymbols-/24/6f4e37/external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-.png" alt="external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-"/> {{ strtoupper($post->analytics->views ?? 0) }} |
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        @endforeach
+        @endif
+    </div>
     <div class="footer">
         <img src="\storage\images\icons8-coffee-beans-100.png" style="width: 48px;"></img>
         <h5>Blog Title</h5>
