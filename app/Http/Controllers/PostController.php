@@ -135,10 +135,10 @@ class PostController extends Controller
         return response($post->image_data)->header('Content-Type', 'image/jpeg');
     }
 
-    public function show($id) {
+    /*public function show($id) {
         $post = Post::with(['contributors', 'tags', 'analytics'])->findOrFail($id);
 
-        // Increment view count using the existing analytics relation
+        // Increment view count using the existing analytics relation 
         if ($post->analytics) {
             $post->analytics->increment('views');
         } else {
@@ -153,7 +153,7 @@ class PostController extends Controller
         $otherPosts = Post::where('id', '!=', $id)->latest()->take(4)->get();
 
         return view('article', compact('post', 'otherPosts'));
-    }
+    }*/
 
     public function destroy($id)
     {
