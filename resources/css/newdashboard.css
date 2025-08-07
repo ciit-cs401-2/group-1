@@ -368,7 +368,8 @@ hr {
     font-family: 'Libre Franklin';
     font-size: 0.8em;
     transition: all 0.8s ease;
-    width: 5vw;
+    width: 100px;
+    min-width: 100px;
   }
   .statusOptions {
     display: none;
