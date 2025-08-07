@@ -83,5 +83,4 @@ class ArticleController extends Controller
 
         return view('explore', compact('posts', 'featured_post'));
     }
-
 }

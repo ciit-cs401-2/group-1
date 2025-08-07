@@ -11,9 +11,15 @@ use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+/*Route::get('/', function () {
+    return view('welcome');
+})->name('home');*/
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/article', [ArticleController::class, 'index']);
+
+//Route::get('/newdashboard', [DashboardController::class, 'index'])->name('newdashboard');
 
 Route::get('/register', [RegisterController::class, 'index']);
 
@@ -41,6 +47,8 @@ Route::delete('/destroy-post/{id}', [PostController::class, 'destroy'])->name('p
 Route::get('/api/check-user/{id}', [UserController::class, 'checkUser']);
 
 Route::get('/article/{id}', [ArticleController::class, 'show'])->name('article.show');
+
+//Route::get('/article/{id}', [PostController::class, 'show'])->name('article.show');
 
 Route::post('/create-comment', [CommentController::class, 'store'])->middleware('auth')->name('comment.store');
 

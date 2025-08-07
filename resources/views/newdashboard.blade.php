@@ -124,7 +124,15 @@
                             </div>
                             <div class="postDetails">
                                 <div class="postTitleDate">
-                                    <p class="title">{{ $post->title }}</p>
+                                    <p class="title">
+                                        @if(in_array($post->status, ['published', 'archived']))
+                                            <a href="{{ route('article.show', ['id' => $post->id]) }}">
+                                                {{ $post->title }}
+                                            </a>
+                                        @else
+                                            {{ $post->title }}
+                                        @endif
+                                    </p>
                                     <p class="date">
                                         {{ strtoupper($post->status) }} &nbsp;•&nbsp;
                                         {{ \Carbon\Carbon::parse($post->updated_at)->format('F j, Y') }}
