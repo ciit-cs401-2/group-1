@@ -114,7 +114,14 @@
                 </ul>
             </div>
             <div class="containbutton">
-                <button class="login" onclick="openFormLogIn()">Log In</button>
+                @if(Auth::check())
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="login">Logout</button>
+                </form>
+                @else
+                    <button class="login" onclick="openFormLogIn()">Login</button>
+                @endif
             </div>
         </div>
     </div>

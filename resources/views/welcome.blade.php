@@ -123,12 +123,12 @@
                     </div>
                     <div class="containbutton">
                         @if(Auth::check())
-                            <form method="GET" action="{{ route('newdashboard') }}">
-                                @csrf
-                                <button type="submit" class="login">Manage Posts</button>
-                            </form>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="login">Logout</button>
+                        </form>
                         @else
-                            <button class="login" onclick="openFormLogIn()">Log In</button>
+                            <button class="login" onclick="openFormLogIn()">Login</button>
                         @endif
                     </div>
                 </div>
@@ -140,31 +140,33 @@
             <h1>FEATURED POSTS</h1>
             <div class="card-container">
                 @forelse($posts as $post)
-                    <div class="card">
-                        @if($post->image_data)
-                            <img src="{{ route('posts.image', $post->id) }}" alt="Post Image" style="width: 100%; height: auto;">
-                        @else
-                            <img src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}" alt="Placeholder">
-                        @endif
+                    <a href="{{route('article.show', $post->id)}}">
+                        <div class="card">
+                            @if($post->image_data)
+                                <img src="{{ route('posts.image', $post->id) }}" alt="Post Image" style="width: 100%; height: auto;">
+                            @else
+                                <img src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}" alt="Placeholder">
+                            @endif
 
-                        <div class="card-content">
-                            <p class="tags">
-                                @foreach($post->tags as $tag)
-                                    #{{ strtoupper($tag->tag_name) }}
-                                @endforeach
-                            </p>
-                            <h3>{{ $post->title }}</h3>
-                            <p class="info">
-                                {{ strtoupper(optional($post->published_date)->format('F d Y')) }} |
-                                BY {{ strtoupper($post->contributors->first()->name ?? 'UNKNOWN') }}
-                            </p>
-                            <p class="info">
-                                <img width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/6f4e37/facebook-like.png" alt="facebook-like"/> {{ strtoupper($post->analytics->likes ?? 0) }} |
-                                <img width="12" height="12" src="https://img.icons8.com/material-sharp/100/6f4e37/speech-bubble--v1.png" alt="speech-bubble--v1"/> {{ strtoupper($post->analytics->comments ?? 0) }} |
-                                <img width="24" height="24" src="https://img.icons8.com/external-solid-style-bomsymbols-/24/6f4e37/external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-.png" alt="external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-"/> {{ strtoupper($post->analytics->views ?? 0) }} |
-                            </p>
+                            <div class="card-content">
+                                <p class="tags">
+                                    @foreach($post->tags as $tag)
+                                        #{{ strtoupper($tag->tag_name) }}
+                                    @endforeach
+                                </p>
+                                <h3>{{ $post->title }}</h3>
+                                <p class="info">
+                                    {{ strtoupper(optional($post->published_date)->format('F d Y')) }} |
+                                    BY {{ strtoupper($post->contributors->first()->name ?? 'UNKNOWN') }}
+                                </p>
+                                <p class="info">
+                                    <img width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/6f4e37/facebook-like.png" alt="facebook-like"/> {{ strtoupper($post->analytics->likes ?? 0) }} |
+                                    <img width="12" height="12" src="https://img.icons8.com/material-sharp/100/6f4e37/speech-bubble--v1.png" alt="speech-bubble--v1"/> {{ strtoupper($post->analytics->comments ?? 0) }} |
+                                    <img width="24" height="24" src="https://img.icons8.com/external-solid-style-bomsymbols-/24/6f4e37/external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-.png" alt="external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-"/> {{ strtoupper($post->analytics->views ?? 0) }} |
+                                </p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 @empty
                     <p>No featured posts available.</p>
                 @endforelse
