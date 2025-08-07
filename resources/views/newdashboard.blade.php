@@ -481,20 +481,42 @@
             options.style.display = options.style.display === 'block' ? 'none' : 'block';
         });
 
-        options.querySelectorAll('div').forEach(option => {
-            option.addEventListener('click', () => {
-                display.textContent = option.dataset.display; // to display data-display based sa selected option
-                hiddenInput.value = option.dataset.value; // assigns hiddenInput based sa data-value of selected option,, this is the one submitted to backend
-                options.style.display = 'none';
+        option.addEventListener('click', () => {
+            display.textContent = option.dataset.display;
+            hiddenInput.value = option.dataset.value;
+            options.style.display = 'none';
 
-                // tailwind for dynamic styles
-                if (hiddenInput.value === 'draft') {
-                    display.className = 'displayedStatus border text-yellow-900, border-yellow-900, bg-yellow-200';
-                } else if (hiddenInput.value === 'published') {
-                    display.className = 'displayedStatus border text-green-900, border-green-900, bg-green-200';
-                } else if (hiddenInput.value === 'archived') {
-                    display.className = 'displayedStatus border text-gray-900, border-gray-900, bg-gray-200';
+            const newStatus = option.dataset.value;
+            const postElement = jsPostStatus.closest('.post');
+            const postId = postElement.dataset.postId;
+
+            // Tailwind classes update
+            if (newStatus === 'draft') {
+                display.className = 'displayedStatus border text-yellow-900 border-yellow-900 bg-yellow-200';
+            } else if (newStatus === 'published') {
+                display.className = 'displayedStatus border text-green-900 border-green-900 bg-green-200';
+            } else if (newStatus === 'archived') {
+                display.className = 'displayedStatus border text-gray-900 border-gray-900 bg-gray-200';
+            }
+
+            // Send update to backend via AJAX
+            fetch(`/posts/${postId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.success) {
+                    alert("Failed to update post status.");
                 }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Something went wrong.");
             });
         });
 
@@ -507,5 +529,5 @@
     });
     </script>
 </body>
-    <script src="js/newdashboard.js" defer></script>
+    @vite(['resources/js/newdashboard.js'])
 </html>

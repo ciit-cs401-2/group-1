@@ -171,7 +171,7 @@ class PostController extends Controller
         return redirect('/newdashboard')->with('status', 'Post deleted successfully.');
     }
 
-    public function editDraft($id)
+    /*public function editDraft($id)
     {
         $post = Post::with(['tags', 'contributors'])->where('status', 'draft')->findOrFail($id);
 
@@ -179,5 +179,23 @@ class PostController extends Controller
             'editingDraft' => true,
             'post' => $post
         ]);
+    }*/
+
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:draft,published,archived',
+        ]);
+
+        $post = Post::findOrFail($id);
+
+        if ($post->user_id !== auth()->id()) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
+        }
+
+        $post->status = $request->status;
+        $post->save();
+
+        return response()->json(['success' => true, 'new_status' => $post->status]);
     }
 }

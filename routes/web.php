@@ -61,3 +61,5 @@ Route::get('/posts/{id}', [PostController::class, 'show'])->name('posts.show');
 Route::get('/newdashboard/edit-draft/{id}', [PostController::class, 'editDraft'])->name('posts.editDraft');
 
 Route::put('/newdashboard/update-post/{id}', [PostController::class, 'update'])->name('posts.update');
+
+Route::put('/posts/{id}/status', [PostController::class, 'updateStatus'])->name('posts.updateStatus');
