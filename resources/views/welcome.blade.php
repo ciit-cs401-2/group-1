@@ -214,7 +214,7 @@
         </div>
         <div class="footer">
             <img src="\storage\images\icons8-coffee-beans-100.png" style="width: 48px"></img>
-            <h5>Blog Title</h5>
+            <h5>Coffee & Contemplation</h5>
             <h6>COPYRIGHT © 2025</h6>
             <h6><a target="_blank" href="https://icons8.com/icon/oZJK8H59OkPG/coffee-bean">Coffee Bean</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a></h6>
         </div>
