@@ -151,16 +151,6 @@ p {
     margin-bottom: 3rem;
 }
 /*=== COMMENTS ===*/
-
-.commentCard {
-    gap: 1rem;
-}
-.otherContentContainer span {
-    font-family: 'Libre Franklin';
-    font-weight: 550;
-    font-size: 1.3em;
-    margin: 0;
-}
 .comments {
     display: flex;
     flex-direction: column;
@@ -235,7 +225,7 @@ p {
 .commentAuthor {
     font-family: 'Libre Franklin';
     font-weight: 550;
-    font-size: 0.5em;
+    font-size: 1.3em;
     margin: 0;
 
 }
@@ -247,8 +237,8 @@ p {
 }
 
 .commentContent {
-
-    font-size: 1.3em;
+  margin-left: 4rem;
+  font-size: 1.3em;
   text-align: justify;
   word-break: break-word;
 }
