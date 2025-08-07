@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Document</title>
+    <title>{{ $post->title }}</title>
     <link rel="icon" href="\storage\images\icons8-coffee-beans-100.png">
     <link href="/resources/css/app.css" rel="stylesheet">
     @vite('resources/css/article.css')
@@ -23,7 +23,7 @@
                 <div class="nav">
                     <div class="logo">
                         <img src="\storage\images\icons8-coffee-beans-100.png"></img>
-                        <h1>Blog Title</h1>
+                        <h1>Coffee & Contemplation</h1>
                     </div>
                     <div class="ulcon">
                         <ul class="ul-nav">
@@ -115,7 +115,7 @@
                                 <div class="otherContentContainer">
                                     <p><span class="userHandle">{{$comment->user->name}}</span></p>
                                     <p class="commentContent">
-                                        {{$comment->content}}
+                                        {{trim($comment->content)}}
                                     </p>
                                     <p class ="details"> Last edited on {{ $comment->updated_at->format('F j, Y') }}</p>
                                 </div>
