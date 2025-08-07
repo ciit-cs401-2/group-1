@@ -18,6 +18,86 @@
     <link href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&display=swap" rel="stylesheet">
 </head>
 <body>
+
+    @if (session('access_denied'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                plsLogin()
+            });
+        </script>
+    @endif
+
+    @if ($errors->has('email'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                incorrectCred();
+            });
+        </script>
+    @endif
+
+    <div id="plslogin">
+            <h1>Please Log In</h1>
+            <p>Please log in to access user dashboard</p>
+            <button class="incbutton" onclick="closePls()">OK</button>
+        </div>
+        <div id="incorrect">
+            <h1>Incorrect Credentials</h1>
+            <p>Either your email address, password, or both are incorrect</p>
+            <p>Please try again with the correct credentials.</p>
+            <button class="incbutton" onclick="closeIncorrect()">OK</button>
+        </div>
+        <div id="overlay2"></div>
+        <div class="form" id="login">
+            <form action="{{ route('login') }}" method="POST" class="form-container">
+                @csrf
+                <h1>Log In</h1>
+                <label for="email"><b>Email</b></label>
+                <input type="text" placeholder="Enter email address" name="email" required></input>
+                <label for="password"><b>Password</b></label>
+                <input type="password" placeholder="Enter password" name="password" required></input>
+
+                <button type="submit" class="button" onclick="">Log In</button>
+                <button type="button" class="button cancel" onclick="closeFormLogIn()">Cancel</button>
+                <p onclick="window.location='{{ url('register') }}'">Create an Account</p>
+            </form>
+        </div>
+        <div id="overlay"></div>
+        <script>
+            function logIn() {
+                alert("You have logged in succesfully!");
+                document.getElementById("login").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+            }
+
+            function openFormLogIn() {
+                document.getElementById("login").style.display = "block";
+                document.getElementById("overlay").style.display = "block";
+            }
+
+            function closeFormLogIn() {
+                document.getElementById("login").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+            }
+            function incorrectCred() {
+                document.getElementById("incorrect").style.display = "block";
+                document.getElementById("overlay2").style.display = "block";
+            }
+
+            function closeIncorrect() {
+                document.getElementById("incorrect").style.display = "none";
+                document.getElementById("overlay2").style.display = "none";
+            }
+
+            function plsLogin() {
+                document.getElementById("plslogin").style.display = "block";
+                document.getElementById("overlay").style.display = "block";
+            }
+
+            function closePls() {
+                document.getElementById("plslogin").style.display = "none";
+                document.getElementById("overlay").style.display = "none";
+            }
+        </script>
     <!--========== NAVIGATION BAR ==========-->
             <div class="header2">
                 <div class="nav">
@@ -39,7 +119,14 @@
                         </ul>
                     </div>
                     <div class="containbutton">
-                        <button class="login" onclick="openFormLogIn()">Log In</button>
+                        @if(Auth::check())
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="login">Logout</button>
+                        </form>
+                        @else
+                            <button class="login" onclick="openFormLogIn()">Login</button>
+                        @endif
                     </div>
                 </div>
             </div>

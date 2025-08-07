@@ -66,8 +66,11 @@
         <div id="logout">
             <h1>Log Out?</h1>
             <div class="button-group2">
-                <button class="button1" onclick="confLG()">Log Out</button>
-                <button class="button2"onclick="cancelLG()"">Cancel</button>
+                <form action="{{route('logout')}}" method="POST">
+                    @csrf
+                    <button class="button1" type="submit">Log Out</button>
+                </form>
+                <button class="button2"onclick="cancelLG()">Cancel</button>
             </div>
         </div>
         <div id="overlay"></div>
@@ -78,7 +81,8 @@
             }
 
             function confLG() {
-                alert("Logged out succesfully.")
+                document.getElementById('yourForm').action = "{{ route('logout') }}";
+                document.getElementById('yourForm').submit();
             }
             function cancelLG() {
                 document.getElementById("logout").style.display = "none";
@@ -215,9 +219,11 @@
                         </div>
 
                         <div class="button-group">
-                            <button type="submit" name="status" value="published" class="button1">Publish</button>
-                            <button type="submit" name="status" value="draft" class="button2">Save to Drafts</button>
-                            <button type="button" class="button2">Cancel</button>
+                            <form action="{{route('logout')}}" method="POST">
+                                @csrf
+                                <button class="button1" type="submit">Log Out</button>
+                            </form>
+                        <button class="button2"onclick="cancelLG()">Cancel</button>
                         </div>
                     </div>
                 </form>
