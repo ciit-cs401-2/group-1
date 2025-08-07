@@ -13,21 +13,21 @@ class ArticleController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource. 
      */
     public function create()    //GET
     {
         return view('article.create');
     }
 
-    public function show($id) {
+    public function show($id, Request $request) {
         $post = Post::with(['tags', 'contributors', 'analytics'])
             ->whereIn('status', ['published', 'archived'])
             ->findOrFail($id);
 
         $post->content = trim($post->content);
 
-        // Increment view count
+        // Analytics logic
         if ($post->analytics) {
             $post->analytics->increment('views');
         } else {
@@ -38,14 +38,20 @@ class ArticleController extends Controller
             ]);
         }
 
-        $otherPosts = Post::where('id', '!=', $id)
-            ->where('status', 'published')
-            ->latest()
-            ->take(4)
-            ->get();
+        $view = $request->input('view', 'article');
 
-        return view('article', compact('post', 'otherPosts'));
+        $otherPosts = [];
+        if ($view === 'article') {
+            $otherPosts = Post::where('id', '!=', $id)
+                ->where('status', 'published')
+                ->latest()
+                ->take(4)
+                ->get();
+        }
+
+        return view($view, compact('post', 'otherPosts'));
     }
+
 
     public function explore(Request $request)
     {
