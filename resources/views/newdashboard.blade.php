@@ -14,8 +14,6 @@
 <body>
     <script>
 
-        
-
         // === DASHBOARD SWITCH CONTENT === //
         function changeContent(contentId, btnSelected) {
             // gonna leave comments for each block of code here kasi baka makalimutan ko how all these work
@@ -68,11 +66,8 @@
         <div id="logout">
             <h1>Log Out?</h1>
             <div class="button-group2">
-                <form action="{{route('logout')}}" method="POST">
-                    @csrf
-                    <button class="button1" type="submit">Log Out</button>
-                </form>
-                <button class="button2"onclick="cancelLG()">Cancel</button>
+                <button class="button1" onclick="confLG()">Log Out</button>
+                <button class="button2"onclick="cancelLG()"">Cancel</button>
             </div>
         </div>
         <div id="overlay"></div>
@@ -83,8 +78,7 @@
             }
 
             function confLG() {
-                document.getElementById('yourForm').action = "{{ route('logout') }}";
-                document.getElementById('yourForm').submit();
+                alert("Logged out succesfully.")
             }
             function cancelLG() {
                 document.getElementById("logout").style.display = "none";
@@ -102,138 +96,127 @@
                     </div>
                         <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; Manage Posts</p>
                 </div>
-                <form method="GET" action="{{ route('dashboard.sort') }}">
-                    <div class="manageSettings draftSettings">
-                        <div class="sortOverlay">
-                            <label for="sortOptions">Sort by:</label>
-                            <select name="sortOptions" id="sortOptions" onchange="this.form.submit()">
-                                <option value="" disabled {{ !$sortFieldInput ? 'selected' : '' }} hidden></option>
-                                <option value="title" {{ $sortFieldInput == 'title' ? 'selected' : '' }}>Title</option>
-                                <option value="date" {{ $sortFieldInput == 'date' ? 'selected' : '' }}>Last Edited</option>
-                                <option value="published_date" {{ $sortFieldInput == 'published_date' ? 'selected' : '' }}>Published Date</option>
-                            </select>
-
-                            <label for="sortOrder">Order:</label>
-                            <select name="sortOrder" id="sortOrder" onchange="this.form.submit()">
-                                <option value="" disabled {{ !$sortOrder ? 'selected' : '' }} hidden></option>
-                                <option value="asc" {{ $sortOrder == 'asc' ? 'selected' : '' }}>Ascending</option>
-                                <option value="desc" {{ $sortOrder == 'desc' ? 'selected' : '' }}>Descending</option>
-                            </select>
+                <div class = "manageSettings">
+                    <div class = "sortOverlay">
+                        <label for = "sortOptions">Sort by: </label>
+                        <select id = "sortOptions">
+                            <option value="" selected disabled hidden></option>
+                            <option value = "title">Title</option>
+                            <option value = "date">Last Edited</option>
+                        </select>
+                        <label for = "sortOrder">Order: </label>
+                        <select id = "sortOrder">
+                            <option value="" selected disabled hidden></option>
+                            <option value = "ascending">Ascending</option>
+                            <option value = "descending">Descending</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="managePosts">
+                    @forelse ($posts as $post)
+                        <div class="post">
+                            <div class="postImgContainer">
+                                <img class="postImg" src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
+                            </div>
+                            <div class="postDetails">
+                                <div class="postTitleDate">
+                                    <p class="title">{{ $post->title }}</p>
+                                    <p class="date">
+                                        {{ strtoupper($post->status) }} &nbsp;•&nbsp;
+                                        {{ \Carbon\Carbon::parse($post->updated_at)->format('F j, Y') }}
+                                    </p>
+                                    <p>Role: {{ $post->pivot->author_role }}</p>
+                                </div>
+                            </div>
+                            <div class="postActions">
+                                <div class="postStatus">
+                                    <div class="displayedStatus border
+                                    @if($post->status ===  'draft') text-yellow-900 border-yellow-900 bg-yellow-200
+                                    @elseif($post->status === 'published') text-green-900 border-green-900 bg-green-200
+                                    @elseif($post->status === 'archived') text-gray-900 border-gray-900 bg-gray-200
+                                    @endif">
+                                    {{ strtoupper($post->status) }}</div>
+                                    <div class="statusOptions">
+                                        <div data-value="draft" data-display="DRAFT">DRAFT</div>
+                                        <div data-value="published" data-display="PUBISHED">PUBLISHED</div>
+                                        <div data-value="archived" data-display="ARCHIVED">ARCHIVED</div>
+                                    </div>
+                                    <input type="hidden" name="status" value="{{ $post->status }}">
+                                </div>
+                                <a href="#"><img class="postIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
+                            </div>
+                        </div>
+                    @empty
+                        <p>No posts found.</p>
+                    @endforelse
+                </div>
+                <!--<div class = "managePosts">
+                    <div class = "post">
+                        <div class = "postImgContainer">
+                            <img class = "postImg" src = "{{asset('storage/images/coffee2.jpg')}}">
+                        </div>
+                        <div class = "postDetails">
+                            <div class = "postTitleDate">
+                                <p class = "title">Why Starbucks Is Overrated And Sells Awful Drinks Yet I Still Buy From Them</p>
+                                <p class = "date">PUBLISHED &nbsp;• &nbsp;JULY 19, 2025</p>
+                            </div>
+                        </div>
+                        <div class = "postActions">
+                            <div class="postStatus">
+                                <div class="displayedStatus border">VISIBLE</div> /hardcoded. replace this code to the current status of post according to database
+                                <div class="statusOptions">
+                                    <div data-value="visible" data-display="VISIBLE">Set as Visible</div>
+                                    <div data-value="archive" data-display="ARCHIVED">Move to Archive</div>
+                                </div>
+                                <input type="hidden" name="status" value="visible"> /"value = "visible"" to be replaced by dun sa nakalagay sa currentStatus. this is the actual value sent to database
+                                </div>
+                            <a href = "#"><img class = "postIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
                         </div>
                     </div>
-                    <div class="managePosts">
-                        @forelse ($posts as $post)
-                            <div class="postLinkWrapper" style="text-decoration: none; color: inherit;">
-                                <div class="post" style="position: relative; cursor: {{ in_array($post->status, ['published', 'archived']) ? 'pointer' : 'default' }};">
-                                    
-                                    {{-- Make entire post clickable only if published or archived --}}
-                                    @if (in_array($post->status, ['published', 'archived']))
-                                        <a href="{{ route('article.show', $post->id) }}" style="position: absolute; inset: 0; z-index: 1;"></a>
-                                    @endif
-
-                                    <div class="postImgContainer" style="position: relative; z-index: 2;">
-                                        <img class="postImg"
-                                            src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
-                                    </div>
-
-                                    <div class="postDetails" style="position: relative; z-index: 2;">
-                                        <div class="postTitleDate">
-                                            <p class="title">{{ $post->title }}</p>
-                                            <p class="date">
-                                                {{ strtoupper($post->status) }} &nbsp;•&nbsp;
-                                                {{ \Carbon\Carbon::parse($post->updated_at)->format('F j, Y') }}
-                                            </p>
-                                            <p>Role: {{ $post->pivot->author_role }}</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="postActions" style="position: relative; z-index: 2;">
-                                        <div class="postStatus">
-                                            <div class="displayedStatus border
-                                                @if($post->status === 'draft') text-yellow-900 border-yellow-900 bg-yellow-200
-                                                @elseif($post->status === 'published') text-green-900 border-green-900 bg-green-200
-                                                @elseif($post->status === 'archived') text-gray-900 border-gray-900 bg-gray-200
-                                                @endif">
-                                                {{ strtoupper($post->status) }}
-                                            </div>
-                                            <div class="statusOptions">
-                                                <div data-value="draft" data-display="DRAFT">Set as Draft</div>
-                                                <div data-value="published" data-display="PUBLISHED">Publish</div>
-                                                <div data-value="archived" data-display="ARCHIVED">Archive</div>
-                                            </div>
-                                            <input type="hidden" name="status" value="{{ $post->status }}">
-                                        </div>
-                                        <a href="#">
-                                            <img class="postIcons" width="24" height="24"
-                                                src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png"
-                                                alt="filled-trash"/>
-                                        </a>
-                                    </div>
-
-                                </div> {{-- /.post --}}
-                            </div> {{-- /.postLinkWrapper --}}
-                        @empty
-                            <p>No posts found.</p>
-                        @endforelse
-                    </div>
+                </div>-->
             </div>
 
             <!-- === CREATE POSTS === -->
-            <div id="create" class="{{ isset($editingDraft) ? '' : 'hidden' }}">
+            <div id="create" class="hidden">
                 <div class="createHeading">
                     <div class="createHeadingText">
-                        <h1>{{ isset($editingDraft) ? 'Edit Draft' : 'Create Post' }}</h1>
+                        <h1>Create Post</h1>
                         <a href="/">Back to Home</a>
                     </div>
-                    <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; {{ isset($editingDraft) ? 'Edit Draft' : 'Create a Post' }}</p>
+                    <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; Create a Post</p>
                 </div>
 
-                <form method="POST"
-                    action="{{ isset($editingDraft) ? route('posts.update', $post->id) : route('posts.store') }}"
-                    enctype="multipart/form-data">
+                <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
                     @csrf
-                    @if(isset($editingDraft))
-                        @method('PUT')
-                    @endif
                     <div class="formcontainer">
                         <br>
                         <label for="input-file" id="drop-area">
                             <input type="file" accept="image/*" id="input-file" name="image" hidden>
                             <div id="img-view">
-                                <img src="{{ isset($editingDraft) && $post->image ? asset('storage/' . $post->image) : '/storage/images/icons8-cloud-upload-100.png' }}">
+                                <img src="\storage\images\icons8-cloud-upload-100.png">
                                 <p>DRAG AND DROP OR CLICK</p>
                                 <span>Upload an image from computer</span>
                             </div>
                         </label>
 
                         <label for="title">Title</label>
-                        <input type="text"
-                            placeholder="Enter title here"
-                            name="title"
-                            value="{{ old('title', $post->title ?? '') }}"
-                            required>
+                        <input type="text" placeholder="Enter title here" name="title" required>
 
                         <label for="content">Content</label>
-                        <textarea placeholder="Share your thoughts here"
-                                name="content"
-                                required>{{ old('content', $post->content ?? '') }}</textarea>
+                        <textarea placeholder="Share your thoughts here" name="content" required></textarea>
 
                         <label for="contributor">Contributor IDs</label>
                         <div class="cont-input">
                             <ul id="contributors"></ul>
-                            <input type="number" id="input-contributor"
-                                placeholder="Enter the names of contributors and press the enter key to confirm" />
-                            <input type="hidden" name="contributors"
-                                value='@json($post->contributors->pluck("id") ?? [])'>
+                            <input type="number" id="input-contributor" placeholder="Enter the names of contributors and press the enter key to confirm" />
+                            <input type="hidden" name="contributors" value="[]">
                         </div>
 
                         <label for="tags">Tags</label>
                         <div class="tags-input">
                             <ul id="tags"></ul>
-                            <input type="text" id="input-tag"
-                                placeholder="Enter tag and press the enter key to confirm" />
-                            <input type="hidden" name="tags"
-                                value='@json($post->tags->pluck("name") ?? [])'>
+                            <input type="text" id="input-tag" placeholder="Enter tag and press the enter key to confirm" />
+                            <input type="hidden" name="tags" value="[]">
                         </div>
 
                         <div class="button-group">
@@ -246,148 +229,141 @@
 
                 {{-- JS Section --}}
                 <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        @if(isset($editingDraft))
-                            document.querySelector('#create')?.classList.remove('hidden');
-                            document.querySelector('#manage')?.classList.add('hidden');
-                        @endif
+                    const dropArea = document.getElementById("drop-area");
+                    const inputFile = document.getElementById("input-file");
+                    const imageView = document.getElementById("img-view");
 
-                        const dropArea = document.getElementById("drop-area");
-                        const inputFile = document.getElementById("input-file");
-                        const imageView = document.getElementById("img-view");
+                    inputFile.addEventListener("change", uploadImage);
 
-                        inputFile.addEventListener("change", uploadImage);
+                    function uploadImage() {
+                        let imgLink = URL.createObjectURL(inputFile.files[0]);
+                        imageView.style.backgroundImage = `url(${imgLink})`;
+                        imageView.textContent = " ";
+                        imageView.style.border = "none";
+                        imageView.style.backgroundSize = "cover";
+                        imageView.style.backgroundPosition = "center";
+                        imageView.style.backgroundRepeat = "no-repeat";
+                    }
 
-                        function uploadImage() {
-                            let imgLink = URL.createObjectURL(inputFile.files[0]);
-                            imageView.style.backgroundImage = `url(${imgLink})`;
-                            imageView.textContent = " ";
-                            imageView.style.border = "none";
-                            imageView.style.backgroundSize = "cover";
-                            imageView.style.backgroundPosition = "center";
-                            imageView.style.backgroundRepeat = "no-repeat";
-                        }
+                    dropArea.addEventListener("dragover", function (e) {
+                        e.preventDefault();
+                    });
+                    dropArea.addEventListener("drop", function (e) {
+                        e.preventDefault();
+                        inputFile.files = e.dataTransfer.files;
+                        uploadImage();
+                    });
 
-                        dropArea.addEventListener("dragover", function (e) {
-                            e.preventDefault();
-                        });
-                        dropArea.addEventListener("drop", function (e) {
-                            e.preventDefault();
-                            inputFile.files = e.dataTransfer.files;
-                            uploadImage();
-                        });
+                    const conts = document.getElementById('contributors'); // UL element
+                    const inputc = document.getElementById('input-contributor'); // Input field
+                    const hiddenContributors = document.querySelector('input[name="contributors"]'); // Hidden input
 
-                        const conts = document.getElementById('contributors'); // UL element
-                        const inputc = document.getElementById('input-contributor'); // Input field
-                        const hiddenContributors = document.querySelector('input[name="contributors"]'); // Hidden input
+                    // Add contributor when Enter is pressed
+                    inputc.addEventListener('keydown', function (event) {
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            const contContent = inputc.value.trim();
+                            const contributorId = parseInt(contContent, 10);
 
-                        // Add contributor when Enter is pressed
-                        inputc.addEventListener('keydown', function (event) {
-                            if (event.key === 'Enter') {
-                                event.preventDefault();
-                                const contContent = inputc.value.trim();
-                                const contributorId = parseInt(contContent, 10);
+                            // Validate: must be numeric, positive
+                            if (!contContent || isNaN(contributorId) || contributorId < 0) {
+                                alert("Please enter a valid positive integer contributor ID.");
+                                inputc.value = '';
+                                return;
+                            }
 
-                                // Validate: must be numeric, positive
-                                if (!contContent || isNaN(contributorId) || contributorId < 0) {
-                                    alert("Please enter a valid positive integer contributor ID.");
-                                    inputc.value = '';
-                                    return;
-                                }
+                            // Prevent duplicate entries
+                            const existingIds = Array.from(conts.querySelectorAll('li')).map(li => li.dataset.id);
+                            if (existingIds.includes(String(contributorId))) {
+                                alert("This contributor ID has already been added.");
+                                inputc.value = '';
+                                return;
+                            }
 
-                                // Prevent duplicate entries
-                                const existingIds = Array.from(conts.querySelectorAll('li')).map(li => li.dataset.id);
-                                if (existingIds.includes(String(contributorId))) {
-                                    alert("This contributor ID has already been added.");
-                                    inputc.value = '';
-                                    return;
-                                }
+                            // Backend check: does the user ID exist?
+                            fetch(`/api/check-user/${contributorId}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.exists) {
+                                        const cont = document.createElement('li');
+                                        cont.setAttribute('data-id', contributorId);
+                                        cont.textContent = contributorId;
 
-                                // Backend check: does the user ID exist?
-                                fetch(`/api/check-user/${contributorId}`)
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        if (data.exists) {
-                                            const cont = document.createElement('li');
-                                            cont.setAttribute('data-id', contributorId);
-                                            cont.textContent = contributorId;
-
-                                            const delBtn = document.createElement('button');
-                                            delBtn.textContent = ' x';
-                                            delBtn.classList.add('delete-button');
-                                            delBtn.addEventListener('click', () => {
-                                                cont.remove();
-                                                updateContributorsHidden();
-                                            });
-
-                                            cont.appendChild(delBtn);
-                                            conts.appendChild(cont);
+                                        const delBtn = document.createElement('button');
+                                        delBtn.textContent = ' x';
+                                        delBtn.classList.add('delete-button');
+                                        delBtn.addEventListener('click', () => {
+                                            cont.remove();
                                             updateContributorsHidden();
-                                        } else {
-                                            alert("This contributor ID does not exist.");
-                                        }
-                                        inputc.value = '';
-                                    })
-                                    .catch(error => {
-                                        console.error('Error checking contributor:', error);
-                                        alert("An error occurred while checking the contributor.");
-                                        inputc.value = '';
-                                    });
-                            }
-                        });
+                                        });
 
-                        // Remove contributor
-                        conts.addEventListener('click', function (event) {
-                            if (event.target.classList.contains('delete-button')) {
-                                event.target.parentNode.remove();
-                                updateContributorsHidden();
-                            }
-                        });
-
-                        // Update the hidden input with an array of contributor IDs
-                        function updateContributorsHidden() {
-                            const contributorIds = Array.from(conts.querySelectorAll('li')).map(li => li.dataset.id);
-                            hiddenContributors.value = JSON.stringify(contributorIds);
-                            console.log('Contributors:', hiddenContributors.value); // Corrected debug log
-                        }
-
-                        // Force update right before form submission
-                        const form = document.querySelector('form');
-                        form.addEventListener('submit', function () {
-                            updateContributorsHidden();
-                        });
-
-                        const tagsUl = document.getElementById('tags');
-                        const inputTag = document.getElementById('input-tag');
-                        const hiddenTags = document.querySelector('input[name="tags"]');
-
-                        inputTag.addEventListener('keydown', function (event) {
-                            if (event.key === 'Enter') {
-                                event.preventDefault();
-                                const tagContent = inputTag.value.trim();
-                                if (tagContent !== '') {
-                                    const tag = document.createElement('li');
-                                    tag.textContent = tagContent;
-                                    tag.innerHTML += '<button class="delete-button"> x</button>';
-                                    tagsUl.appendChild(tag);
-                                    inputTag.value = '';
-                                    updateTagsHidden();
-                                }
-                            }
-                        });
-
-                        tagsUl.addEventListener('click', function (event) {
-                            if (event.target.classList.contains('delete-button')) {
-                                event.target.parentNode.remove();
-                                updateTagsHidden();
-                            }
-                        });
-
-                        function updateTagsHidden() {
-                            const tags = Array.from(tagsUl.querySelectorAll('li')).map(li => li.firstChild.textContent.trim());
-                            hiddenTags.value = JSON.stringify(tags);
+                                        cont.appendChild(delBtn);
+                                        conts.appendChild(cont);
+                                        updateContributorsHidden();
+                                    } else {
+                                        alert("This contributor ID does not exist.");
+                                    }
+                                    inputc.value = '';
+                                })
+                                .catch(error => {
+                                    console.error('Error checking contributor:', error);
+                                    alert("An error occurred while checking the contributor.");
+                                    inputc.value = '';
+                                });
                         }
                     });
+
+                    // Remove contributor
+                    conts.addEventListener('click', function (event) {
+                        if (event.target.classList.contains('delete-button')) {
+                            event.target.parentNode.remove();
+                            updateContributorsHidden();
+                        }
+                    });
+
+                    // Update the hidden input with an array of contributor IDs
+                    function updateContributorsHidden() {
+                        const contributorIds = Array.from(conts.querySelectorAll('li')).map(li => li.dataset.id);
+                        hiddenContributors.value = JSON.stringify(contributorIds);
+                        console.log('Contributors:', hiddenContributors.value); // Corrected debug log
+                    }
+
+                    // Force update right before form submission
+                    const form = document.querySelector('form');
+                    form.addEventListener('submit', function () {
+                        updateContributorsHidden();
+                    });
+
+                    const tagsUl = document.getElementById('tags');
+                    const inputTag = document.getElementById('input-tag');
+                    const hiddenTags = document.querySelector('input[name="tags"]');
+
+                    inputTag.addEventListener('keydown', function (event) {
+                        if (event.key === 'Enter') {
+                            event.preventDefault();
+                            const tagContent = inputTag.value.trim();
+                            if (tagContent !== '') {
+                                const tag = document.createElement('li');
+                                tag.textContent = tagContent;
+                                tag.innerHTML += '<button class="delete-button"> x</button>';
+                                tagsUl.appendChild(tag);
+                                inputTag.value = '';
+                                updateTagsHidden();
+                            }
+                        }
+                    });
+
+                    tagsUl.addEventListener('click', function (event) {
+                        if (event.target.classList.contains('delete-button')) {
+                            event.target.parentNode.remove();
+                            updateTagsHidden();
+                        }
+                    });
+
+                    function updateTagsHidden() {
+                        const tags = Array.from(tagsUl.querySelectorAll('li')).map(li => li.firstChild.textContent.trim());
+                        hiddenTags.value = JSON.stringify(tags);
+                    }
                 </script>
             </div>
 
@@ -399,6 +375,22 @@
                         <a href = "#">Back to Home</a>
                     </div>
                         <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; Drafts</p>
+                </div>
+                <div class = "manageSettings draftSettings">
+                    <div class = "sortOverlay">
+                        <label for = "sortOptions">Sort by: </label>
+                        <select id = "sortOptions">
+                            <option value="" selected disabled hidden></option>
+                            <option value = "title">Title</option>
+                            <option value = "date">Last Edited</option>
+                        </select>
+                        <label for = "sortOrder">Order: </label>
+                        <select id = "sortOrder">
+                            <option value="" selected disabled hidden></option>
+                            <option value = "ascending">Ascending</option>
+                            <option value = "descending">Descending</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="draftPosts">
@@ -416,20 +408,16 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="draftActions">
-                                <a href="{{ route('posts.editDraft', $draft->id) }}">
-                                    <img class="draftIcons" width="32" height="24"
-                                        src="https://img.icons8.com/material-rounded/24/FAB005/edit.png"
-                                        alt="edit" />
-                                </a>
+                            <div class = "draftActions">
+                                <button onclick = "changeContent('create', this)">
+                                    <img class = "draftIcons" width="32" height="24" src="https://img.icons8.com/material-rounded/24/FAB005/edit.png" alt="edit"/>
+                                </button>
                                 <form action="{{ route('posts.destroy', $draft->id) }}" method="POST" style="display:inline">
                                     @csrf
                                     @method('DELETE')
                                     <button style="background: none; border: none; padding: 0; cursor: pointer;" type="submit">
-                                        <img class="draftIcons" width="24" height="24"
-                                            src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png"
-                                            alt="filled-trash" />
-                                    </button>
+                                        <img class = "draftIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/>
+                                    </button >
                                 </form>
                             </div>
                         </div>
@@ -437,6 +425,28 @@
                         <p>No posts found.</p>
                     @endforelse
                 </div>
+
+
+{{-- 
+                <div class = "draftPosts">
+                    <div class = "draft">
+                        <div class = "draftImgContainer">
+                            <img class = "draftImg" src = "{{asset('storage/images/coffee2.jpg')}}">
+                        </div>
+                        <div class = "draftDetails">
+                            <div class = "draftTitleDate">
+                                <p class = "draftTitle">draftttt</p>
+                                <p class = "draftDate">PUBLISHED &nbsp;• &nbsp;JULY 19, 2025</p>
+                            </div>
+                        </div>
+                        <div class = "draftActions">
+                            <a href = "#"><img class = "draftIcons" width="24" height="24" src="https://img.icons8.com/material-rounded/24/FAB005/edit.png" alt="edit"/></a>
+                            <a href = "#"><img class = "draftIcons" width="24" height="24" src="https://img.icons8.com/fluency-systems-filled/24/FA5252/filled-trash.png" alt="filled-trash"/></a>
+                        </div>
+                    </div>
+                </div> 
+--}}
+
             </div>
 
             <!--- === ANALYTICS === --->
@@ -645,13 +655,12 @@
                 options.style.display = 'none';
 
                 // tailwind for dynamic styles
-
                 if (hiddenInput.value === 'draft') {
-                    display.className = 'displayedStatus border text-yellow-900 border-yellow-900 bg-yellow-200';
+                    display.className = 'displaydStatusborder text-yellow-900, border-yellow-900, bg-yellow-200';
                 } else if (hiddenInput.value === 'published') {
-                    display.className = 'displayedStatus border text-green-900 border-green-900 bg-green-200';
+                    display.className = 'displaydStatusborder text-green-900, border-green-900, bg-green-200';
                 } else if (hiddenInput.value === 'archived') {
-                    display.className = 'displayedStatus border text-gray-900 border-gray-900 bg-gray-200';
+                    display.className = 'displaydStatusborder text-gray-900, border-gray-900, bg-gray-200';
                 }
             });
         });
