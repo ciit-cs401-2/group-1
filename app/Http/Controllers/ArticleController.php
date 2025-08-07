@@ -9,7 +9,8 @@ class ArticleController extends Controller
 {
     public function index() //GET
     {
-        return view('article');
+        $post = Post::where('status', 'published')->get();
+        return view('article', compact('post'));
     }
 
     /**
@@ -66,7 +67,8 @@ class ArticleController extends Controller
             ->get();
 
         // Select featured post based on highest view-to-like ratio
-        $featured_post = $posts->filter(function ($post) {
+        $featured_post = $posts->where('status','published')
+        ->filter(function ($post) {
             $likes = $post->analytics->likes ?? 0;
             return $likes > 0; // Avoid division by zero
         })->sortByDesc(function ($post) {
