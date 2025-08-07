@@ -219,11 +219,9 @@
                         </div>
 
                         <div class="button-group">
-                            <form action="{{route('logout')}}" method="POST">
-                                @csrf
-                                <button class="button1" type="submit">Log Out</button>
-                            </form>
-                        <button class="button2"onclick="cancelLG()">Cancel</button>
+                            <button type="submit" name="status" value="published" class="button1">Publish</button>
+                            <button type="submit" name="status" value="draft" class="button2">Save to Drafts</button>
+                            <button type="button" class="button2">Cancel</button>
                         </div>
                     </div>
                 </form>
