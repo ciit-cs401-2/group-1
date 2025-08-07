@@ -468,66 +468,62 @@
     </div>
 
 <script>
-    // === PICKER DROPDOWN AND LABE; FOR MANAGE POST VISIBILTY === ///
-    // placing it here to ensure it avoid complications later
-
     document.querySelectorAll('.postStatus').forEach(jsPostStatus => {
-        const display = jsPostStatus.querySelector('.displayedStatus'); // label displayed sa picker
-        const options = jsPostStatus.querySelector('.statusOptions'); // dropdown options
-        const hiddenInput = jsPostStatus.querySelector('input[type=hidden]'); // actual value submitted to database
-
-        // toggle to hide and show dropdown
+        const display = jsPostStatus.querySelector('.displayedStatus');
+        const options = jsPostStatus.querySelector('.statusOptions'); 
+        const hiddenInput = jsPostStatus.querySelector('input[type=hidden]'); 
         display.addEventListener('click', () => {
             options.style.display = options.style.display === 'block' ? 'none' : 'block';
         });
 
-        option.addEventListener('click', () => {
-            display.textContent = option.dataset.display;
-            hiddenInput.value = option.dataset.value;
-            options.style.display = 'none';
+        options.querySelectorAll('div').forEach(option => {
+            option.addEventListener('click', () => {
+                const newStatus = option.dataset.value;
 
-            const newStatus = option.dataset.value;
-            const postElement = jsPostStatus.closest('.post');
-            const postId = postElement.dataset.postId;
+                display.textContent = option.dataset.display;
+                hiddenInput.value = newStatus;
+                options.style.display = 'none';
 
-            // Tailwind classes update
-            if (newStatus === 'draft') {
-                display.className = 'displayedStatus border text-yellow-900 border-yellow-900 bg-yellow-200';
-            } else if (newStatus === 'published') {
-                display.className = 'displayedStatus border text-green-900 border-green-900 bg-green-200';
-            } else if (newStatus === 'archived') {
-                display.className = 'displayedStatus border text-gray-900 border-gray-900 bg-gray-200';
-            }
+                const postElement = jsPostStatus.closest('.post');
+                const postId = postElement.dataset.postId;
 
-            // Send update to backend via AJAX
-            fetch(`/posts/${postId}/status`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ status: newStatus })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.success) {
-                    alert("Failed to update post status.");
+                if (newStatus === 'draft') {
+                    display.className = 'displayedStatus border text-yellow-900 border-yellow-900 bg-yellow-200';
+                } else if (newStatus === 'published') {
+                    display.className = 'displayedStatus border text-green-900 border-green-900 bg-green-200';
+                } else if (newStatus === 'archived') {
+                    display.className = 'displayedStatus border text-gray-900 border-gray-900 bg-gray-200';
                 }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("Something went wrong.");
+
+                fetch(`/posts/${postId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        alert("Failed to update post status.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error updating status:", error);
+                    alert("Something went wrong while updating the post.");
+                });
             });
         });
 
-        // so dropdown will automatically close when users click outside dropdown area
         document.addEventListener('click', e => {
-        if (!jsPostStatus.contains(e.target)) {
-            options.style.display = 'none';
-        }
+            if (!jsPostStatus.contains(e.target)) {
+                options.style.display = 'none';
+            }
         });
     });
-    </script>
+</script>
+
 </body>
     @vite(['resources/js/newdashboard.js'])
 </html>
