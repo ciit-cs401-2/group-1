@@ -44,7 +44,7 @@
         <div class = "sidebar">
 
             <div>
-                <a class = "logo" href = "#"><img height = 50px width=50px src = "{{asset('storage/images/icons8-coffee-beans-100.png')}}"><h2>Blog</h2></a>
+                <a class = "logo" href = "{{route('home')}}"><img height = 50px width=50px src = "{{asset('storage/images/icons8-coffee-beans-100.png')}}"><h2>Coffee &<br>Contemplation</h2></a>
                 <h2>Dashboard</h2>
                 <ul class = "dashboardOptions">
                     <li><a class = "icon active" href = "#" onclick = "changeContent('manage', this)"><img class = "manageIcon" width="24" height="24" src="https://img.icons8.com/material/24/6f4e37/dashboard-layout.png" alt="dashboard-layout"/><p>Manage Posts</p></a></li>
@@ -113,25 +113,25 @@
                     </div>
                 </div>-->
                 <form method="GET" action="{{ route('dashboard.sort') }}">
-    <div class="manageSettings draftSettings">
-        <div class="sortOverlay">
-            <label for="sortOptions">Sort by:</label>
-            <select name="sortOptions" id="sortOptions" onchange="this.form.submit()">
-                <option value="" disabled {{ !$sortFieldInput ? 'selected' : '' }} hidden></option>
-                <option value="title" {{ $sortFieldInput == 'title' ? 'selected' : '' }}>Title</option>
-                <option value="date" {{ $sortFieldInput == 'date' ? 'selected' : '' }}>Last Edited</option>
-                <option value="published_date" {{ $sortFieldInput == 'published_date' ? 'selected' : '' }}>Published Date</option>
-            </select>
+                    <div class="manageSettings draftSettings">
+                        <div class="sortOverlay">
+                            <label for="sortOptions">Sort by:</label>
+                            <select name="sortOptions" id="sortOptions" onchange="this.form.submit()">
+                                <option value="" disabled {{ !$sortFieldInput ? 'selected' : '' }} hidden></option>
+                                <option value="title" {{ $sortFieldInput == 'title' ? 'selected' : '' }}>Title</option>
+                                <option value="date" {{ $sortFieldInput == 'date' ? 'selected' : '' }}>Last Edited</option>
+                                <option value="published_date" {{ $sortFieldInput == 'published_date' ? 'selected' : '' }}>Published Date</option>
+                            </select>
 
-            <label for="sortOrder">Order:</label>
-            <select name="sortOrder" id="sortOrder" onchange="this.form.submit()">
-                <option value="" disabled {{ !$sortOrder ? 'selected' : '' }} hidden></option>
-                <option value="asc" {{ $sortOrder == 'asc' ? 'selected' : '' }}>Ascending</option>
-                <option value="desc" {{ $sortOrder == 'desc' ? 'selected' : '' }}>Descending</option>
-            </select>
-        </div>
-    </div>
-</form>
+                            <label for="sortOrder">Order:</label>
+                            <select name="sortOrder" id="sortOrder" onchange="this.form.submit()">
+                                <option value="" disabled {{ !$sortOrder ? 'selected' : '' }} hidden></option>
+                                <option value="asc" {{ $sortOrder == 'asc' ? 'selected' : '' }}>Ascending</option>
+                                <option value="desc" {{ $sortOrder == 'desc' ? 'selected' : '' }}>Descending</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
                 <div class="managePosts">
                     @forelse ($posts as $post)
                         <div class="post">
@@ -151,15 +151,15 @@
                             <div class="postActions">
                                 <div class="postStatus">
                                     <div class="displayedStatus border
-                                    @if($post->status ===  'draft') text-yellow-900 border-yellow-900 bg-yellow-200
-                                    @elseif($post->status === 'published') text-green-900 border-green-900 bg-green-200
-                                    @elseif($post->status === 'archived') text-gray-900 border-gray-900 bg-gray-200
+                                    @if($post->status ===  'draft')  text-yellow-900 border-yellow-900 bg-yellow-200
+                                    @elseif($post->status === 'published')  text-green-900 border-green-900 bg-green-200
+                                    @elseif($post->status === 'archived')  text-gray-900 border-gray-900 bg-gray-200
                                     @endif">
                                     {{ strtoupper($post->status) }}</div>
                                     <div class="statusOptions">
-                                        <div data-value="draft" data-display="DRAFT">DRAFT</div>
-                                        <div data-value="published" data-display="PUBISHED">PUBLISHED</div>
-                                        <div data-value="archived" data-display="ARCHIVED">ARCHIVED</div>
+                                        <div data-value="draft" data-display="DRAFT">Set as Draft</div>
+                                        <div data-value="published" data-display="PUBISHED">Publish</div>
+                                        <div data-value="archived" data-display="ARCHIVED">Archive</div>
                                     </div>
                                     <input type="hidden" name="status" value="{{ $post->status }}">
                                 </div>
@@ -676,11 +676,11 @@
 
                 // tailwind for dynamic styles
                 if (hiddenInput.value === 'draft') {
-                    display.className = 'displaydStatusborder text-yellow-900, border-yellow-900, bg-yellow-200';
+                    display.className = 'displayedStatus border text-yellow-900, border-yellow-900, bg-yellow-200';
                 } else if (hiddenInput.value === 'published') {
-                    display.className = 'displaydStatusborder text-green-900, border-green-900, bg-green-200';
+                    display.className = 'displayedStatus border text-green-900, border-green-900, bg-green-200';
                 } else if (hiddenInput.value === 'archived') {
-                    display.className = 'displaydStatusborder text-gray-900, border-gray-900, bg-gray-200';
+                    display.className = 'displayedStatus border text-gray-900, border-gray-900, bg-gray-200';
                 }
             });
         });

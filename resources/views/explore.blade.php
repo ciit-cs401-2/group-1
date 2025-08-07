@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Blog | Explore</title>
+    <title>Coffee & Contemplation | Explore</title>
     <link rel="icon" href="\storage\images\icons8-coffee-beans-100.png">
     @vite('resources/css/explore.css')
     @vite('resources/css/app.css')
@@ -67,7 +67,7 @@
         <div class="nav">
             <div class="logo">
                 <img src="\storage\images\icons8-coffee-beans-100.png"></img>
-                <h1>Blog Title</h1>
+                <h1>Coffee & Contemplation</h1>
             </div>
             <div class="ulcon">
                 <ul class="ul-nav">
