@@ -232,22 +232,7 @@
                     </div>
                         <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; Drafts</p>
                 </div>
-                <div class = "manageSettings draftSettings">
-                    <div class = "sortOverlay">
-                        <label for = "sortOptions">Sort by: </label>
-                        <select id = "sortOptions">
-                            <option value="" selected disabled hidden></option>
-                            <option value = "title">Title</option>
-                            <option value = "date">Last Edited</option>
-                        </select>
-                        <label for = "sortOrder">Order: </label>
-                        <select id = "sortOrder">
-                            <option value="" selected disabled hidden></option>
-                            <option value = "ascending">Ascending</option>
-                            <option value = "descending">Descending</option>
-                        </select>
-                    </div>
-                </div>
+           
 
                 <div class="draftPosts">
                     @forelse ($drafts as $draft)
