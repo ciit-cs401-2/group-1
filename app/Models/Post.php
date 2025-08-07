@@ -16,6 +16,7 @@ class Post extends Model
         //'image_path',
         'published_date',
         'status',
+        'user_id',
     ];
 
     protected $casts = [

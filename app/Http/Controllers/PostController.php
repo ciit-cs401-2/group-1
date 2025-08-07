@@ -189,10 +189,6 @@ class PostController extends Controller
 
         $post = Post::findOrFail($id);
 
-        if ($post->user_id !== auth()->id()) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 403);
-        }
-
         $post->status = $request->status;
         $post->save();
 

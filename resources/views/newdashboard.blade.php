@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -118,7 +119,7 @@
                 </form>
                 <div class="managePosts">
                     @forelse ($posts as $post)
-                        <div class="post">
+                        <div class="post" data-post-id="{{ $post->id }}">
                             <div class="postImgContainer">
                                 <img class="postImg" src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
                             </div>
@@ -495,14 +496,16 @@
                     display.className = 'displayedStatus border text-gray-900 border-gray-900 bg-gray-200';
                 }
 
-                fetch(`/posts/${postId}/status`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ status: newStatus })
-                })
+fetch(`/posts/${postId}/status`, {
+    method: 'PUT',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+    },
+    body: JSON.stringify({ status: newStatus }),
+    credentials: 'same-origin'
+})
+
                 .then(response => response.json())
                 .then(data => {
                     if (!data.success) {
