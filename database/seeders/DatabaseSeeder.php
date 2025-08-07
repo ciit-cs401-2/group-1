@@ -27,8 +27,8 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
         ]);
 
-        $amount_of_users = 40;
-        $amount_of_posts = 20;
+        $amount_of_users = 10;
+        $amount_of_posts = 10;
 
         User::factory($amount_of_users)->create();
 
@@ -50,9 +50,10 @@ class DatabaseSeeder extends Seeder
                         'comments' => $amount_of_comments
                     ]);
                 });
+            $this->assignPostRelationships();
         }
         
-        $this->assignPostRelationships();
+        
     }
 
     public function assignPostRelationships(): void
