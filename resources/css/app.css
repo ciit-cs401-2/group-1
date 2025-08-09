@@ -234,7 +234,7 @@ li {
     z-index: 5;
 }
 
-#incorrect > h1 {
+#incorrect > h1, #plslogin > h1 {
     font-weight: 800;
     font-size: 1vw;
     color: #442010;
@@ -244,6 +244,13 @@ li {
 
 #incorrect > p {
     font-size: .75vw;
+    color: grey;
+    font-family: 'Libre Franklin';
+    user-select: none;
+}
+
+#plslogin > p {
+    font-size: .90vw;
     color: grey;
     font-family: 'Libre Franklin';
     user-select: none;

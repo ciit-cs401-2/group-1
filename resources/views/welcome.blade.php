@@ -181,7 +181,7 @@
                         <h2>Share Your Thoughts</h2>
                     </div>
                     <div class="partition">
-                        <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <p class="body">Spill the beans about anything coffee today! Got any thoughts brewing? Share your thoughts with us!</p>
                     </div>
                 </div>
                 <div class="card2">
@@ -189,7 +189,7 @@
                         <h2>Discuss with Coffee Lovers</h2>
                     </div>
                     <div class="partition">
-                        <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <p class="body">Talk with fellow coffee coffee lovers about anything coffee anywhere anytime!</p>
                     </div>
                 </div>
                 <div class="card2">
@@ -197,18 +197,18 @@
                         <h2>Discover New Things</h2>
                     </div>
                     <div class="partition">
-                        <p class="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        <p class="body">Learn new things about coffee and explore new ideas! Discover new facts from your fellow coffee lovers and share your own!</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="cta">
             <div class="ctacol">
-                <img src="https://picsum.photos/id/237/500/200">
+                <img src="/storage/images/pexels-chevanon-302901.jpg">
             </div>
             <div class="ctacol">
                 <h3>Never miss a post</h3>
-                <p class="more">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <p class="more">Sign up for an account today to post and discuss about all things coffee! Start blogging and sharing on Coffee & Contemplations today.</p>
                 <button class="signup" onclick="window.location='{{ url("register") }}'">Sign Up</button>
             </div>
         </div>

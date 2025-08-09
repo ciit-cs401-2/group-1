@@ -7,7 +7,7 @@
     @vite('/resources/css/app.css')
     @vite('/resources/css/register.css')
 
-    <title>blog | register</title>
+    <title>Coffee & Contemplation | Register</title>
     <link rel="icon" href="\storage\images\icons8-coffee-beans-100.png">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,11 +19,11 @@
         <div class="left">
             <div class="leftcon1">
                 <img src="\storage\images\icons8-coffee-beans-100.png">
-                <h1>Blog Title?</h1>
+                <h1>Coffee &<br>Contemplation</h1>
             </div>
             <div class="leftcon2">
                 <h2>Never miss a post</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore</p>
+                <p>Ready to start blogging about all things coffee? Sign up for an account now and join your fellow coffee lovers today.</p>
             </div>
         </div>
         <div class="right">

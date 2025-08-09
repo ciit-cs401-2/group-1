@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dashboard</title>
+    <title>Coffee & Contemplation | Dashboard</title>
     <link rel="icon" href="\storage\images\icons8-coffee-beans-100.png">
     @vite('resources/css/newdashboard.css')
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -236,7 +236,7 @@
                     </div>
                         <p>DASHBOARD&nbsp;&nbsp; >&nbsp;&nbsp; Drafts</p>
                 </div>
-           
+
 
                 <div class="draftPosts">
                     @forelse ($drafts as $draft)
@@ -313,7 +313,7 @@
                     </div>
                     <div class = "postCount">
                         @forelse ($posts as $post)
-                            
+
                                 <div class = "count">
                                     <div class = "postImgContainer countImgContainer">
                                         <img class="postImg" src="{{ $post->image_data ? route('posts.image', $post->id) : asset('storage/images/default.jpg') }}">
@@ -460,8 +460,8 @@
 <script>
     document.querySelectorAll('.postStatus').forEach(jsPostStatus => {
         const display = jsPostStatus.querySelector('.displayedStatus');
-        const options = jsPostStatus.querySelector('.statusOptions'); 
-        const hiddenInput = jsPostStatus.querySelector('input[type=hidden]'); 
+        const options = jsPostStatus.querySelector('.statusOptions');
+        const hiddenInput = jsPostStatus.querySelector('input[type=hidden]');
         display.addEventListener('click', () => {
             options.style.display = options.style.display === 'block' ? 'none' : 'block';
         });

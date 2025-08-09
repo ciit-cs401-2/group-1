@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>{{ $post->title }}</title>
+    <title>Coffee & Contemplation | {{ $post->title }}</title>
     <link rel="icon" href="\storage\images\icons8-coffee-beans-100.png">
     <link href="/resources/css/app.css" rel="stylesheet">
     @vite('resources/css/article.css')
@@ -159,7 +159,7 @@
                     </div>
                     <div class = "numbers">
                         <img width="24" height="24" src="https://img.icons8.com/external-solid-style-bomsymbols-/24/6f4e37/external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-.png" alt="external-design-web-design-device-solid-style-set-2-solid-style-bomsymbols-"/>
-                
+
                         <p>{{$post->analytics['views']}}</p>
                     </div>
                     <script>
@@ -168,9 +168,9 @@
 
                         likeIcon.addEventListener('click', () => {
                             liked = !liked;
-                            likeIcon.src = liked 
-                            ? 'https://img.icons8.com/fluency-systems-filled/24/6f4e37/facebook-like.png' 
-                            : 'https://img.icons8.com/fluency-systems-regular/24/6f4e37/facebook-like.png'; 
+                            likeIcon.src = liked
+                            ? 'https://img.icons8.com/fluency-systems-filled/24/6f4e37/facebook-like.png'
+                            : 'https://img.icons8.com/fluency-systems-regular/24/6f4e37/facebook-like.png';
                         });
                     </script>
                 </div>
@@ -206,11 +206,11 @@
                                     </p>
                                     <p class ="details"> Last edited on {{ $comment->updated_at->format('F j, Y') }}</p>
                                 </div>
-                            </div>    
+                            </div>
                         @empty
                             <h3>No comments</h3>
                         @endforelse
-                    </div>      
+                    </div>
                 </div>
             </div>
         </div>
