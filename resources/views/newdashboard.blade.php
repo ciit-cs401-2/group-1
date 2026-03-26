@@ -207,7 +207,7 @@
                         <label for="contributor">Contributor IDs</label>
                         <div class="cont-input">
                             <ul id="contributors"></ul>
-                            <input type="number" id="input-contributor" placeholder="Enter the names of contributors and press the enter key to confirm" />
+                            <input type="number" id="input-contributor" placeholder="Enter the IDs of contributors and press the enter key to confirm" />
                             <input type="hidden" name="contributors" value="[]">
                         </div>
 
